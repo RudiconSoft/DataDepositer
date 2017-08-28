@@ -52,6 +52,7 @@ namespace DataDepositer
 
         private void buttonSetUser_Click(object sender, EventArgs e)
         {
+            this.Visible = false;
             DialogResult res = setUserForm.ShowDialog();
 
             if (res != DialogResult.Cancel)
@@ -60,6 +61,7 @@ namespace DataDepositer
                 labelName.Text = userName;
                 password = setUserForm.password;
             }
+            this.Visible = true;
         }
     }
 }
