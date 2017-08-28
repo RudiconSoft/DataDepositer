@@ -78,7 +78,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Docs\" />
-    <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\Chest_32x32.ico" />
+    <Content Include="Images\Chest_40x40.ico" />
+    <Content Include="Images\Chest_64x64.ico" />
+    <Content Include="Images\Treasurechest.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
