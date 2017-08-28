@@ -1,3 +1,12 @@
+/**
+ *  RuDiCon Soft (c) 2017
+ *  
+ *   AESEnDecryptor - class for working with file crypt and decrypt
+ *   
+ *   @created 2017-08-28    Artem Nukolaev
+ *   
+ */
+
 using System;
 using System.IO;
 using System.Text;
