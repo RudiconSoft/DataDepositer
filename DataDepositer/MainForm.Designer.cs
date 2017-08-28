@@ -30,14 +30,18 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.openFileDialogButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.labelName = new System.Windows.Forms.Label();
+            this.buttonSetUser = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // openFileDialog1
+            // openFileDialog
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog.FileName = "\"\"";
+            this.openFileDialog.Title = "Select File For Crypt & Store";
             // 
             // notifyIcon
             // 
@@ -56,12 +60,44 @@
             this.openFileDialogButton.TabIndex = 0;
             this.openFileDialogButton.Text = "Open File";
             this.openFileDialogButton.UseVisualStyleBackColor = true;
+            this.openFileDialogButton.Click += new System.EventHandler(this.openFileDialogButton_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(13, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(64, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "User name :";
+            // 
+            // labelName
+            // 
+            this.labelName.AutoSize = true;
+            this.labelName.Location = new System.Drawing.Point(107, 13);
+            this.labelName.Name = "labelName";
+            this.labelName.Size = new System.Drawing.Size(105, 13);
+            this.labelName.TabIndex = 2;
+            this.labelName.Text = "USER NOT DEFINE";
+            // 
+            // buttonSetUser
+            // 
+            this.buttonSetUser.Location = new System.Drawing.Point(197, 525);
+            this.buttonSetUser.Name = "buttonSetUser";
+            this.buttonSetUser.Size = new System.Drawing.Size(75, 23);
+            this.buttonSetUser.TabIndex = 3;
+            this.buttonSetUser.Text = "Set User";
+            this.buttonSetUser.UseVisualStyleBackColor = true;
+            this.buttonSetUser.Click += new System.EventHandler(this.buttonSetUser_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 561);
+            this.Controls.Add(this.buttonSetUser);
+            this.Controls.Add(this.labelName);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.openFileDialogButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -72,14 +108,18 @@
             this.TopMost = true;
             this.Deactivate += new System.EventHandler(this.MainForm_Deactivate);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.Button openFileDialogButton;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelName;
+        private System.Windows.Forms.Button buttonSetUser;
     }
 }
 

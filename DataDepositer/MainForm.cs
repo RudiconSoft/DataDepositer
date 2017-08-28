@@ -12,6 +12,10 @@ namespace DataDepositer
 {
     public partial class MainForm : Form
     {
+        SetUserForm setUserForm = new SetUserForm();
+        String userName = "";
+        String password = ""; // @need Refactor
+
         public MainForm()
         {
             InitializeComponent();
@@ -33,6 +37,28 @@ namespace DataDepositer
                 this.WindowState = FormWindowState.Normal;
                 this.ShowInTaskbar = true;
                 notifyIcon.Visible = false;
+            }
+        }
+
+        private void openFileDialogButton_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            // Get file name
+            string filename = openFileDialog.FileName;
+            // @TODO Add functionality
+           
+        }
+
+        private void buttonSetUser_Click(object sender, EventArgs e)
+        {
+            DialogResult res = setUserForm.ShowDialog();
+
+            if (res != DialogResult.Cancel)
+            {
+                userName = setUserForm.userName;
+                labelName.Text = userName;
+                password = setUserForm.password;
             }
         }
     }
