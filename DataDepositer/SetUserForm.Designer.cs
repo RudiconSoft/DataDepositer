@@ -45,7 +45,6 @@
             this.btnSetUser.TabIndex = 0;
             this.btnSetUser.Text = "Set User";
             this.btnSetUser.UseVisualStyleBackColor = true;
-            this.btnSetUser.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
             // 
@@ -88,7 +87,7 @@
             this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.button2_Click);
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // SetUserForm
             // 

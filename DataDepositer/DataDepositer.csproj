@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserData.cs" />
     <EmbeddedResource Include="SetUserForm.resx">
       <DependentUpon>SetUserForm.cs</DependentUpon>
     </EmbeddedResource>

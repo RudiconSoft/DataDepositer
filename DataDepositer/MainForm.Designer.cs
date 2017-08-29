@@ -36,6 +36,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.labelName = new System.Windows.Forms.Label();
             this.buttonSetUser = new System.Windows.Forms.Button();
+            this.btnStartProcess = new System.Windows.Forms.Button();
+            this.FileDescriptionTextBox = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // openFileDialog
@@ -90,11 +93,43 @@
             this.buttonSetUser.UseVisualStyleBackColor = true;
             this.buttonSetUser.Click += new System.EventHandler(this.buttonSetUser_Click);
             // 
+            // btnStartProcess
+            // 
+            this.btnStartProcess.Location = new System.Drawing.Point(16, 442);
+            this.btnStartProcess.Name = "btnStartProcess";
+            this.btnStartProcess.Size = new System.Drawing.Size(256, 48);
+            this.btnStartProcess.TabIndex = 4;
+            this.btnStartProcess.Text = "Start Process";
+            this.btnStartProcess.UseVisualStyleBackColor = true;
+            // 
+            // FileDescriptionTextBox
+            // 
+            this.FileDescriptionTextBox.Location = new System.Drawing.Point(16, 295);
+            this.FileDescriptionTextBox.MaxLength = 256;
+            this.FileDescriptionTextBox.Multiline = true;
+            this.FileDescriptionTextBox.Name = "FileDescriptionTextBox";
+            this.FileDescriptionTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.FileDescriptionTextBox.Size = new System.Drawing.Size(256, 100);
+            this.FileDescriptionTextBox.TabIndex = 5;
+            this.FileDescriptionTextBox.Text = "Enter file descryption here ...";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(16, 276);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(174, 13);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "File Description (max 256 symbols) :";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 561);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.FileDescriptionTextBox);
+            this.Controls.Add(this.btnStartProcess);
             this.Controls.Add(this.buttonSetUser);
             this.Controls.Add(this.labelName);
             this.Controls.Add(this.label1);
@@ -120,6 +155,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelName;
         private System.Windows.Forms.Button buttonSetUser;
+        private System.Windows.Forms.Button btnStartProcess;
+        private System.Windows.Forms.TextBox FileDescriptionTextBox;
+        private System.Windows.Forms.Label label2;
     }
 }
 
