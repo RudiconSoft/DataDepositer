@@ -35,7 +35,24 @@ namespace DataDepositer
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            Close();
+            
+            //Close();
+        }
+
+        private void btnSetUser_Click(object sender, EventArgs e)
+        {
+            if (tbUserName.Text.Length > 0 && tbPassword.Text.Length > 0)
+            {
+                userName = tbUserName.Text;
+                password = tbPassword.Text;
+
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("User Name and Password must not be EMPTY !!", "ERROR !!! Empty User Name or Password !!!!!");
+            }
         }
     }
 }

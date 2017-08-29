@@ -45,6 +45,7 @@
             this.btnSetUser.TabIndex = 0;
             this.btnSetUser.Text = "Set User";
             this.btnSetUser.UseVisualStyleBackColor = true;
+            this.btnSetUser.Click += new System.EventHandler(this.btnSetUser_Click);
             // 
             // label1
             // 
@@ -81,6 +82,7 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(143, 176);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
@@ -93,6 +95,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(234, 211);
             this.Controls.Add(this.tbPassword);
             this.Controls.Add(this.label2);

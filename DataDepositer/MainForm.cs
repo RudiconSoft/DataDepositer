@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace DataDepositer
 {
@@ -49,7 +50,7 @@ namespace DataDepositer
             string filename = openFileDialog.FileName;
             // Read file
             isFileSelected = true;
-            labelFileName.Text = filename;
+            labelFileName.Text = Path.GetFileName(filename);
         }
 
         private void buttonSetUser_Click(object sender, EventArgs e)
@@ -61,8 +62,13 @@ namespace DataDepositer
             {
                 user.SetUserData(setUserForm.userName, setUserForm.password);
                 labelName.Text = user.GetName();
+
             }
             this.Visible = true;
+
+           
+
+            
         }
 
         private void MainForm_Load(object sender, EventArgs e)
