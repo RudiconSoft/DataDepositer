@@ -32,7 +32,43 @@ namespace DataDepositer
             password = _password;
         }
 
+        public String GetFileName()
+        {
+            return filename;
+        }
+        public void SetFileName(String _filename)
+        {
+            filename = _filename;
+        }
 
+        public String GetDescription()
+        {
+            return description;
+        }
 
+        public void SetDescription(String _description)
+        {
+            description = _description;
+        }
+
+        public String GetName()
+        {
+            return name;
+        }
+
+        public void SetName(String _name)
+        {
+            name = _name;
+        }
+
+        public String GetPassword()
+        {
+            return password;
+        }
+
+        public void SetPassword(String _password)
+        {
+            password = _password;
+        }
     }
 }

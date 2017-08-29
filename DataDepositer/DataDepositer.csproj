@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AESEnDecryption.cs" />
     <Compile Include="FileData.cs" />
+    <Compile Include="Serializer.cs" />
     <Compile Include="SetUserForm.cs">
       <SubType>Form</SubType>
     </Compile>

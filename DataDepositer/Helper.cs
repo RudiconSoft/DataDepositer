@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Runtime.InteropServices;
+using System.IO;
 
 
 namespace DataDepositer
@@ -62,5 +63,35 @@ namespace DataDepositer
             }
             return sb.ToString();
         }
+
+        //
+        // Read struct bytes from filesteram and return struct
+        // 
+        // @use SOMESTRUCTURE stExmpl = ReadStruct<SOMESTRUCTURE>(filesteram);
+        //
+        //
+        public T ReadStruct<T>(FileStream fs)
+        {
+            byte[] buffer = new byte[Marshal.SizeOf(typeof(T))];
+            fs.Read(buffer, 0, Marshal.SizeOf(typeof(T)));
+            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            T temp = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+            handle.Free();
+            return temp;
+        }
+
+        //
+        // @return raw data of given object
+        //
+        public byte[] RawSerialize(object anything)
+        {
+            int rawsize = Marshal.SizeOf(anything);
+            byte[] rawdata = new byte[rawsize];
+            GCHandle handle = GCHandle.Alloc(rawdata, GCHandleType.Pinned);
+            Marshal.StructureToPtr(anything, handle.AddrOfPinnedObject(), false);
+            handle.Free();
+            return rawdata;
+        }
+
     }
 }
