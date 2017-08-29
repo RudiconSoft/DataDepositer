@@ -17,9 +17,10 @@ namespace DataDepositer
 {
     public class UserData
     {
-        private string name;
+        private String name;
         private string password;
         private DateTime lastUpdate;
+        public bool IsSet = false;
 
         // Default constructor
         public UserData()
@@ -29,6 +30,14 @@ namespace DataDepositer
             SetLastUpdate(DateTime.Now);
         }
 
+        public void SetUserData(String newName , String newPassword)
+        {
+            SetName(newName);
+            SetPassword(newPassword);
+            SetLastUpdate(DateTime.Now);
+            IsSet = true;
+        }
+
         public string GetName()
         {
             return name;
@@ -36,6 +45,7 @@ namespace DataDepositer
 
         public void SetName(string value)
         {
+            SetLastUpdate(DateTime.Now);
             name = value;
         }
 

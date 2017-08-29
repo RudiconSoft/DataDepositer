@@ -39,6 +39,8 @@
             this.btnStartProcess = new System.Windows.Forms.Button();
             this.FileDescriptionTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.labelFileName = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // openFileDialog
@@ -122,11 +124,31 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "File Description (max 256 symbols) :";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(16, 218);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(55, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "File name:";
+            // 
+            // labelFileName
+            // 
+            this.labelFileName.AutoSize = true;
+            this.labelFileName.Location = new System.Drawing.Point(19, 235);
+            this.labelFileName.Name = "labelFileName";
+            this.labelFileName.Size = new System.Drawing.Size(107, 13);
+            this.labelFileName.TabIndex = 8;
+            this.labelFileName.Text = "NO FILE SELECTED";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 561);
+            this.Controls.Add(this.labelFileName);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.FileDescriptionTextBox);
             this.Controls.Add(this.btnStartProcess);
@@ -142,6 +164,7 @@
             this.Text = "Data Depositor (c)";
             this.TopMost = true;
             this.Deactivate += new System.EventHandler(this.MainForm_Deactivate);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -158,6 +181,8 @@
         private System.Windows.Forms.Button btnStartProcess;
         private System.Windows.Forms.TextBox FileDescriptionTextBox;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelFileName;
     }
 }
 

@@ -13,9 +13,10 @@ namespace DataDepositer
     public partial class MainForm : Form
     {
         SetUserForm setUserForm = new SetUserForm();
-        String userName = "";
-        String password = ""; // @need Refactor
-
+        UserData user = new UserData();
+        bool isFileSelected = false;
+        
+        
         public MainForm()
         {
             InitializeComponent();
@@ -46,8 +47,9 @@ namespace DataDepositer
                 return;
             // Get file name
             string filename = openFileDialog.FileName;
-            // @TODO Add functionality
-           
+            // Read file
+            isFileSelected = true;
+            labelFileName.Text = filename;
         }
 
         private void buttonSetUser_Click(object sender, EventArgs e)
@@ -57,11 +59,15 @@ namespace DataDepositer
 
             if (res != DialogResult.Cancel)
             {
-                userName = setUserForm.userName;
-                labelName.Text = userName;
-                password = setUserForm.password;
+                user.SetUserData(setUserForm.userName, setUserForm.password);
+                labelName.Text = user.GetName();
             }
             this.Visible = true;
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
