@@ -111,7 +111,9 @@ namespace DataDepositer
             }
         }
 
-        private bool JoinFiles(string FolderInputPath, string FileOutputPath)
+
+        // @return true if successful join files 
+        public bool JoinFiles(string FolderInputPath, string FileOutputPath)
         {
             try
             {
@@ -133,6 +135,34 @@ namespace DataDepositer
             }
         }
 
+
+        // @return true if success Add header to file
+        public bool AddHeaderToFile(STORED_FILE_HEADER header, String sFullPath)
+        {
+            try
+            {
+                // 
+                Helper h = new Helper();
+                byte[] bs = h.RawSerialize(header);
+                byte[] fileBytes = File.ReadAllBytes(sFullPath);
+
+
+
+                return true;
+            }
+            catch(Exception e)
+            {
+                Logger.Log.Error(e.ToString());
+                return false;
+            }
+
+           
+        }
+
+        public bool GetHeaderFromFile()
+        {
+            return false;
+        }
 
     }
 }

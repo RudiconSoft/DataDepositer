@@ -15,6 +15,7 @@ namespace DataDepositer
         static void Main()
         {
             Logger.InitLogger(); // Init logger 
+            Logger.Log.Info(DateTime.Now.ToString() + "  Start DataDepositor.");
 
             try
             {

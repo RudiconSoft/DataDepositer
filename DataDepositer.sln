@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataDepositer", "DataDepositer\DataDepositer.csproj", "{6FD74D76-F9D1-4087-ACF9-96A52FBBD419}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestDataDepositor", "UnitTestDataDepositor\UnitTestDataDepositor.csproj", "{D6281B1F-29FB-4423-BB2D-1241DA1A749B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{6FD74D76-F9D1-4087-ACF9-96A52FBBD419}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FD74D76-F9D1-4087-ACF9-96A52FBBD419}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FD74D76-F9D1-4087-ACF9-96A52FBBD419}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6281B1F-29FB-4423-BB2D-1241DA1A749B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6281B1F-29FB-4423-BB2D-1241DA1A749B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6281B1F-29FB-4423-BB2D-1241DA1A749B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6281B1F-29FB-4423-BB2D-1241DA1A749B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

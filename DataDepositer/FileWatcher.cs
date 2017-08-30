@@ -10,7 +10,7 @@ using System;
 using System.IO;
 using System.Security.Permissions;
 using log4net;
-
+using System.Text;
 
 namespace DataDepositer
 {
@@ -55,12 +55,19 @@ namespace DataDepositer
         {
             // @TODO Specify what is done when a file is changed, created, or deleted.
             //
+            StringBuilder sb = new StringBuilder();
+            sb.Append(e.ToString());
+            Logger.Log.Info(sb.ToString());
         }
 
         private void OnRenamed(object source, RenamedEventArgs e)
         {
             // @TODO Specify what is done when a file is renamed (turn back name).
-           
+            //Console.WriteLine("File: {0} renamed to {1}", e.OldFullPath, e.FullPath);
+            //FileInfo fi = new FileInfo(e.Name);
+            StringBuilder sb = new StringBuilder();
+            sb.Append(e.ToString());
+            Logger.Log.Info(sb.ToString());
         }
     }
 }
