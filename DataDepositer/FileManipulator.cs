@@ -62,12 +62,12 @@ namespace DataDepositer
 
         // @return true if success write all parts
 
-        public void SplitFile(string FileInputPath, string FolderOutputPath, int OutputFiles)
+        public void SplitFile(string FileInputPath, string sSourceFileName, string FolderOutputPath, int OutputFiles)
         {
             // Store the file in a byte array
             Byte[] byteSource = System.IO.File.ReadAllBytes(FileInputPath);
             // Get file info
-            FileInfo fiSource = new FileInfo(txtSourceFile.Text);
+            FileInfo fiSource = new FileInfo(sSourceFileName);
             // Calculate the size of each part
             int partSize = (int)Math.Ceiling((double)(fiSource.Length / OutputFiles));
             // The offset at which to start reading from the source file
