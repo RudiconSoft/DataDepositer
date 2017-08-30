@@ -62,58 +62,75 @@ namespace DataDepositer
 
         // @return true if success write all parts
 
-        public void SplitFile(string FileInputPath, string sSourceFileName, string FolderOutputPath, int OutputFiles)
+        public bool SplitFile(string FileInputPath, string sSourceFileName, string FolderOutputPath, int OutputFiles)
         {
-            // Store the file in a byte array
-            Byte[] byteSource = System.IO.File.ReadAllBytes(FileInputPath);
-            // Get file info
-            FileInfo fiSource = new FileInfo(sSourceFileName);
-            // Calculate the size of each part
-            int partSize = (int)Math.Ceiling((double)(fiSource.Length / OutputFiles));
-            // The offset at which to start reading from the source file
-            int fileOffset = 0;
-
-            // Stores the name of each file part
-            string currPartPath;
-            // The file stream that will hold each file part
-            FileStream fsPart;
-            // Stores the remaining byte length to write to other files
-            int sizeRemaining = (int)fiSource.Length;
-
-            // Loop through as many times we need to create the partial files
-            for (int i = 0; i < OutputFiles; i++)
+            try
             {
-                // Store the path of the new part
-                currPartPath = FolderOutputPath + "\\" + fiSource.Name + "." + String.Format(@"{0:D4}", i) + ".part";
-                // A filestream for the path
-                if (!File.Exists(currPartPath))
+                // Store the file in a byte array
+                Byte[] byteSource = System.IO.File.ReadAllBytes(FileInputPath);
+                // Get file info
+                FileInfo fiSource = new FileInfo(sSourceFileName);
+                // Calculate the size of each part
+                int partSize = (int)Math.Ceiling((double)(fiSource.Length / OutputFiles));
+                // The offset at which to start reading from the source file
+                int fileOffset = 0;
+
+                // Stores the name of each file part
+                string currPartPath;
+                // The file stream that will hold each file part
+                FileStream fsPart;
+                // Stores the remaining byte length to write to other files
+                int sizeRemaining = (int)fiSource.Length;
+
+                // Loop through as many times we need to create the partial files
+                for (int i = 0; i < OutputFiles; i++)
                 {
-                    fsPart = new FileStream(currPartPath, FileMode.CreateNew);
-                    // Calculate the remaining size of the whole file
-                    sizeRemaining = (int)fiSource.Length - (i * partSize);
-                    // The size of the last part file might differ because a file doesn't always split equally
-                    if (sizeRemaining < partSize)
+                    // Store the path of the new part
+                    currPartPath = FolderOutputPath + "\\" + fiSource.Name + "." + String.Format(@"{0:D4}", i) + ".part";
+                    // A filestream for the path
+                    if (!File.Exists(currPartPath))
                     {
-                        partSize = sizeRemaining;
+                        fsPart = new FileStream(currPartPath, FileMode.CreateNew);
+                        // Calculate the remaining size of the whole file
+                        sizeRemaining = (int)fiSource.Length - (i * partSize);
+                        // The size of the last part file might differ because a file doesn't always split equally
+                        if (sizeRemaining < partSize)
+                        {
+                            partSize = sizeRemaining;
+                        }
+                        fsPart.Write(byteSource, fileOffset, partSize);
+                        fsPart.Close();
+                        fileOffset += partSize;
                     }
-                    fsPart.Write(byteSource, fileOffset, partSize);
-                    fsPart.Close();
-                    fileOffset += partSize;
                 }
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
             }
         }
 
-        private void JoinFiles(string FolderInputPath, string FileOutputPath)
+        private bool JoinFiles(string FolderInputPath, string FileOutputPath)
         {
-            DirectoryInfo diSource = new DirectoryInfo(FolderInputPath);
-            FileStream fsSource = new FileStream(FileOutputPath, FileMode.Append);
-
-            foreach (FileInfo fiPart in diSource.GetFiles(@"*.part"))
+            try
             {
-                Byte[] bytePart = System.IO.File.ReadAllBytes(fiPart.FullName);
-                fsSource.Write(bytePart, 0, bytePart.Length);
+                DirectoryInfo diSource = new DirectoryInfo(FolderInputPath);
+                FileStream fsSource = new FileStream(FileOutputPath, FileMode.Append);
+
+                foreach (FileInfo fiPart in diSource.GetFiles(@"*.part"))
+                {
+                    Byte[] bytePart = System.IO.File.ReadAllBytes(fiPart.FullName);
+                    fsSource.Write(bytePart, 0, bytePart.Length);
+                }
+                fsSource.Close();
+
+                return true;
             }
-            fsSource.Close();
+            catch (Exception e)
+            {
+                return false; // @TODO add exception processing.
+            }
         }
 
 
