@@ -11,6 +11,8 @@ namespace DataDepositer
 {
     public static class Logger
     {
+        // Init class for log.
+        // LOGGER in AppConfig
         private static ILog log = LogManager.GetLogger("LOGGER");
 
 
