@@ -63,6 +63,10 @@ namespace DataDepositer
         }
 
         // @return true if success write all parts
+        //
+        // @upadetd 2017-08-31  Artem Nikolaev
+        //                      Fix partSize calc
+        //                      Remove file exist check
 
         public bool SplitFile(string FileInputPath, string sSourceFileName, string FolderOutputPath, int OutputFiles)
         {
@@ -144,7 +148,7 @@ namespace DataDepositer
             }
             catch (Exception e)
             {
-                Logger.Log.Error(e.ToString());
+                //Logger.Log.Error(e.ToString());
                 return false; // @TODO add exception processing.
             }
         }
@@ -155,10 +159,19 @@ namespace DataDepositer
         {
             try
             {
-                // 
+                // create byte arrays with header and file.
                 Helper h = new Helper();
                 byte[] bs = h.RawSerialize(header);
                 byte[] fileBytes = File.ReadAllBytes(sFullPath);
+
+                // rename file (add ".old" extention)
+                ReserveFile(sFullPath);
+                
+                FileStream fsSource = new FileStream(sFullPath, FileMode.Append);
+                fsSource.Write(bs, 0, bs.Length);
+                fsSource.Write(fileBytes, bs.Length, fileBytes.Length);
+
+                fsSource.Close();
 
                 return true;
             }
@@ -167,14 +180,20 @@ namespace DataDepositer
                 Logger.Log.Error(e.ToString());
                 return false;
             }
-
-           
         }
 
+        // 
         public bool GetHeaderFromFile()
         {
             return false;
         }
 
+
+        // reserve file fileName by adding ".old" ext
+        public void ReserveFile(string fileName)
+        {
+            string newName = fileName + ".old";
+            File.Move(fileName, newName);
+        }
     }
 }

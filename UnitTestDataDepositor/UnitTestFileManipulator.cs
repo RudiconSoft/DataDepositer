@@ -48,5 +48,22 @@ namespace UnitTestDataDepositor
 
         }
 
+        [TestMethod]
+        public void AddHeaderToFile_TestMethod()
+        {
+            DataDepositer.Helper h = new DataDepositer.Helper();
+            DataDepositer.FileManipulator fm = new DataDepositer.FileManipulator();
+
+            String filePath = "d:\\test\\datadepositor\\parts";
+            String filePathJoin = "d:\\test\\datadepositor\\join\\test.txt";
+
+            bool isOk = fm.JoinFiles(filePath, filePathJoin);
+            if (!isOk)
+            {
+                throw new Exception("JoinFiles_TestMethod()");
+            }
+
+        }
+
     }
 }

@@ -9,7 +9,6 @@
 using System;
 using System.IO;
 using System.Security.Permissions;
-using log4net;
 using System.Text;
 
 namespace DataDepositer
@@ -46,7 +45,7 @@ namespace DataDepositer
             }
             catch (Exception e)
             {
-                Logger.Log.Error(e.Message);
+                //Logger.Log.Error(e.Message);
             }
         }
 
@@ -57,7 +56,7 @@ namespace DataDepositer
             //
             StringBuilder sb = new StringBuilder();
             sb.Append(e.ToString());
-            Logger.Log.Info(sb.ToString());
+           // Logger.Log.Info(sb.ToString());
         }
 
         private void OnRenamed(object source, RenamedEventArgs e)
@@ -67,7 +66,7 @@ namespace DataDepositer
             //FileInfo fi = new FileInfo(e.Name);
             StringBuilder sb = new StringBuilder();
             sb.Append(e.ToString());
-            Logger.Log.Info(sb.ToString());
+           Logger.Log.Info(sb.ToString());
         }
     }
 }
