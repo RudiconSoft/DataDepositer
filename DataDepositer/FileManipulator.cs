@@ -5,6 +5,8 @@
  * 
  *  @created 2017-08-30 Artem Nikolaev
  * 
+ *  @TODO add check folder exists and create if not exist.
+ *  
  */
 using System;
 using System.Collections.Generic;
@@ -71,7 +73,10 @@ namespace DataDepositer
                 // Get file info
                 FileInfo fiSource = new FileInfo(sSourceFileName);
                 // Calculate the size of each part
-                int partSize = (int)Math.Ceiling((double)(fiSource.Length / OutputFiles));
+                // int partSize = (int)Math.Ceiling((double)(fiSource.Length / OutputFiles)); // !!!!! ERROR lost last byte possible
+
+                // need increase to 1 for correct 
+                int partSize = (int)Math.Ceiling((double)(fiSource.Length / OutputFiles)) + 1; 
                 // The offset at which to start reading from the source file
                 int fileOffset = 0;
 
@@ -82,15 +87,19 @@ namespace DataDepositer
                 // Stores the remaining byte length to write to other files
                 int sizeRemaining = (int)fiSource.Length;
 
+                // Create output folder if not exist
+                Directory.CreateDirectory(FolderOutputPath);
+
                 // Loop through as many times we need to create the partial files
                 for (int i = 0; i < OutputFiles; i++)
                 {
                     // Store the path of the new part
                     currPartPath = FolderOutputPath + "\\" + fiSource.Name + "." + String.Format(@"{0:D4}", i) + ".part";
                     // A filestream for the path
-                    if (!File.Exists(currPartPath))
+                    //if (!File.Exists(currPartPath))
                     {
-                        fsPart = new FileStream(currPartPath, FileMode.CreateNew);
+                        //fsPart = new FileStream(currPartPath, FileMode.CreateNew);
+                        fsPart = new FileStream(currPartPath, FileMode.Create);
                         // Calculate the remaining size of the whole file
                         sizeRemaining = (int)fiSource.Length - (i * partSize);
                         // The size of the last part file might differ because a file doesn't always split equally
@@ -107,6 +116,7 @@ namespace DataDepositer
             }
             catch (Exception e)
             {
+                Logger.Log.Error(e.ToString());
                 return false;
             }
         }
@@ -117,6 +127,9 @@ namespace DataDepositer
         {
             try
             {
+                // Create output folder if not exist
+                Directory.CreateDirectory(Path.GetDirectoryName(FileOutputPath));
+
                 DirectoryInfo diSource = new DirectoryInfo(FolderInputPath);
                 FileStream fsSource = new FileStream(FileOutputPath, FileMode.Append);
 
@@ -131,6 +144,7 @@ namespace DataDepositer
             }
             catch (Exception e)
             {
+                Logger.Log.Error(e.ToString());
                 return false; // @TODO add exception processing.
             }
         }
@@ -145,8 +159,6 @@ namespace DataDepositer
                 Helper h = new Helper();
                 byte[] bs = h.RawSerialize(header);
                 byte[] fileBytes = File.ReadAllBytes(sFullPath);
-
-
 
                 return true;
             }

@@ -21,7 +21,12 @@ namespace UnitTestDataDepositor
             
             int num = 3;
 
-            fm.SplitFile(filePath, fileName, filePathParts, num);
+            bool isOk = fm.SplitFile(filePath, fileName, filePathParts, num);
+
+            if (!isOk)
+            {
+                throw new Exception("SplitFile_TestMethod()");
+            }
 
         }
 
@@ -32,10 +37,14 @@ namespace UnitTestDataDepositor
             DataDepositer.FileManipulator fm = new DataDepositer.FileManipulator();
 
 //            String filePath = "d:\\test\\datadepositor\\part\\test.txt";
-            String filePath = "d:\\test\\datadepositor\\part\\";
-            String filePathJoin = "d:\\test\\datadepositor\\join";
+            String filePath = "d:\\test\\datadepositor\\parts";
+            String filePathJoin = "d:\\test\\datadepositor\\join\\test.txt";
 
-            fm.JoinFiles(filePath, filePathJoin);
+            bool isOk = fm.JoinFiles(filePath, filePathJoin);
+            if (!isOk)
+            {
+                throw new Exception("JoinFiles_TestMethod()");
+            }
 
         }
 
