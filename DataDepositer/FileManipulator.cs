@@ -169,7 +169,7 @@ namespace DataDepositer
                 
                 FileStream fsSource = new FileStream(sFullPath, FileMode.Append);
                 fsSource.Write(bs, 0, bs.Length);
-                fsSource.Write(fileBytes, bs.Length, fileBytes.Length);
+                fsSource.Write(fileBytes,0, fileBytes.Length);
 
                 fsSource.Close();
 
