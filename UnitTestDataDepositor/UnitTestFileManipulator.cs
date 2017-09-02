@@ -115,5 +115,32 @@ namespace UnitTestDataDepositor
 
         }
 
+
+        [TestMethod]
+        public void GetHeader_TestMethod()
+        {
+            DataDepositer.Helper h = new DataDepositer.Helper();
+            DataDepositer.FileManipulator fm = new DataDepositer.FileManipulator();
+
+            //            String filePathFull = "d:\\test\\datadepositor\\join\\test.txt";
+            String filePathFull = "d:\\test\\datadepositor\\join\\testHeader.txt";
+            String MD5Origin = h.GetStringMD5("55555555555555555555555555555555");
+            String MD5Chunk = h.GetStringMD5("66666666666666666666666666666666");
+
+            DISPLAY_DEVICE dd = new DISPLAY_DEVICE();
+
+            dd.cb = Marshal.SizeOf(dd);
+
+            string str = "Cool Device";
+            dd.DeviceInstanceId = str;
+            dd.DeviceName = MD5Origin.ToCharArray();
+            dd.StateFlags = 12345;
+
+            byte[] test = h.RawSerialize(dd);
+
+            File.WriteAllBytes(filePathFull, test);
+
+        }
+
     }
 }

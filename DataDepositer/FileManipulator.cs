@@ -31,7 +31,7 @@ namespace DataDepositer
                 //        return oBR.ReadBytes((int)oFS.Length);
                 //    }
                 //}
-                return File.ReadAllBytes(sFileName);
+                return File.ReadAllBytes(sFileName); // @refactor
             }
             catch
             {
@@ -53,7 +53,7 @@ namespace DataDepositer
                 //        return true;
                 //    }
                 //}
-                File.WriteAllBytes(sFileName, buffer);
+                File.WriteAllBytes(sFileName, buffer);// @refactor
                 return true;
             }
             catch
@@ -173,6 +173,8 @@ namespace DataDepositer
 
                 fsSource.Close();
 
+                DeleteReserveFile(sFullPath); // Delete .old file
+
                 return true;
             }
             catch(Exception e)
@@ -182,12 +184,29 @@ namespace DataDepositer
             }
         }
 
-        // 
-        public bool GetHeaderFromFile()
+        // @return STRO
+        public STORED_FILE_HEADER GetHeaderFromFile(string fileName)
         {
-            return false;
+            STORED_FILE_HEADER sfh = new STORED_FILE_HEADER();
+            sfh.cb = 0; // if 0 than header not initialized
+
+            Helper helper = new Helper();
+            try
+            {
+                FileStream fs = new FileStream(fileName, FileMode.Open);
+                sfh = helper.ReadStruct<STORED_FILE_HEADER>(fs);
+            }
+            catch (Exception e)
+            {
+                Logger.Log.Error("READ HEADER FROM: " + fileName);
+                Logger.Log.Error(e.Message);
+            }
+
+            return sfh;
         }
 
+
+        // @return list with 
 
         // reserve file fileName by adding ".old" ext
         public void ReserveFile(string fileName)
@@ -195,5 +214,13 @@ namespace DataDepositer
             string newName = fileName + ".old";
             File.Move(fileName, newName);
         }
+
+        // delete reserved file fileName by adding ".old" ext
+        public void DeleteReserveFile(string fileName)
+        {
+            string newName = fileName + ".old";
+            File.Delete(newName);
+        }
+
     }
 }

@@ -49,7 +49,7 @@ namespace DataDepositer
     [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
     public struct STORED_FILE_HEADER // (660 in Unicode)
     {
-        public uint cb;             // Structure size // 4
+        public uint cb;             // Structure size // 4 // indicator for non-initialized struct
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
         public string FileName;     // Short file name
