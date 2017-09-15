@@ -41,6 +41,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.labelFileName = new System.Windows.Forms.Label();
+            this.bgwNetwork = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // openFileDialog
@@ -103,6 +104,7 @@
             this.btnStartProcess.TabIndex = 4;
             this.btnStartProcess.Text = "Start Process";
             this.btnStartProcess.UseVisualStyleBackColor = true;
+            this.btnStartProcess.Click += new System.EventHandler(this.btnStartProcess_Click);
             // 
             // FileDescriptionTextBox
             // 
@@ -142,6 +144,10 @@
             this.labelFileName.TabIndex = 8;
             this.labelFileName.Text = "NO FILE SELECTED";
             // 
+            // bgwNetwork
+            // 
+            this.bgwNetwork.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwNetwork_DoWork);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -165,6 +171,7 @@
             this.TopMost = true;
             this.Deactivate += new System.EventHandler(this.MainForm_Deactivate);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainForm_DragDrop);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -183,6 +190,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label labelFileName;
+        private System.ComponentModel.BackgroundWorker bgwNetwork;
     }
 }
 

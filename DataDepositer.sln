@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataDepositer", "DataDeposi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestDataDepositor", "UnitTestDataDepositor\UnitTestDataDepositor.csproj", "{D6281B1F-29FB-4423-BB2D-1241DA1A749B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RudiconNetwork", "RudiconNetwork\RudiconNetwork.csproj", "{EDDEA6E8-3F57-4BCC-B3DA-A54EBE12CC46}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D6281B1F-29FB-4423-BB2D-1241DA1A749B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6281B1F-29FB-4423-BB2D-1241DA1A749B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6281B1F-29FB-4423-BB2D-1241DA1A749B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDDEA6E8-3F57-4BCC-B3DA-A54EBE12CC46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDDEA6E8-3F57-4BCC-B3DA-A54EBE12CC46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDDEA6E8-3F57-4BCC-B3DA-A54EBE12CC46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDDEA6E8-3F57-4BCC-B3DA-A54EBE12CC46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

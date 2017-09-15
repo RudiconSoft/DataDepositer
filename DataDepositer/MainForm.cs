@@ -15,7 +15,9 @@ namespace DataDepositer
     {
         SetUserForm setUserForm = new SetUserForm();
         UserData user = new UserData();
+        FileData file = new FileData();
         bool isFileSelected = false;
+        bool isUserDefined = false;
         
         
         public MainForm()
@@ -44,13 +46,17 @@ namespace DataDepositer
 
         private void openFileDialogButton_Click(object sender, EventArgs e)
         {
-            if (openFileDialog.ShowDialog() == DialogResult.Cancel)
-                return;
+            DialogResult res = openFileDialog.ShowDialog();
+            //if (openFileDialog.ShowDialog() == DialogResult.Cancel)
+            //   return;
             // Get file name
-            string filename = openFileDialog.FileName;
-            // Read file
-            isFileSelected = true;
-            labelFileName.Text = Path.GetFileName(filename);
+            if (res == DialogResult.OK)
+            {
+                string filename = openFileDialog.FileName;
+                // Read file
+                isFileSelected = true;
+                labelFileName.Text = Path.GetFileName(filename);
+            }
         }
 
         private void buttonSetUser_Click(object sender, EventArgs e)
@@ -62,7 +68,7 @@ namespace DataDepositer
             {
                 user.SetUserData(setUserForm.userName, setUserForm.password);
                 labelName.Text = user.GetName();
-
+                //isUserDefined = true;
             }
             this.Visible = true;
 
@@ -72,6 +78,24 @@ namespace DataDepositer
         }
 
         private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MainForm_DragDrop(object sender, DragEventArgs e)
+        {
+            //e.Data.
+        }
+
+        private void btnStartProcess_Click(object sender, EventArgs e)
+        {
+            if (isFileSelected && user.IsSet)
+            {
+
+            }
+        }
+
+        private void bgwNetwork_DoWork(object sender, DoWorkEventArgs e)
         {
 
         }

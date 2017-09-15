@@ -2,6 +2,10 @@
  *  RuDiCon Soft (c) 2017
  * 
  *  Class for store info about selected file for encrypt
+ *  
+ *  @created 2017-08-23 Artem Nikolaev 
+ *  @upadted 2017-09-13 Artem Nikolaev
+ *                      Add IsSet() public method.
  * 
  */
 using System;
@@ -18,6 +22,7 @@ namespace DataDepositer
         private String description; // File description for header 
         private String name;        // 
         private String password;
+        //public bool IsSet;
 
         public FileData()
         {
@@ -69,6 +74,13 @@ namespace DataDepositer
         public void SetPassword(String _password)
         {
             password = _password;
+        }
+
+
+        // @return true if file data is set (not empty)
+        public bool IsSet()
+        {
+            return filename.Length > 0 && name.Length > 0 && password.Length > 0;
         }
     }
 }
