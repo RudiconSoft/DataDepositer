@@ -42,6 +42,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.labelFileName = new System.Windows.Forms.Label();
             this.bgwNetwork = new System.ComponentModel.BackgroundWorker();
+            this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
+            this.btnSettings = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.SuspendLayout();
             // 
             // openFileDialog
@@ -148,11 +151,29 @@
             // 
             this.bgwNetwork.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwNetwork_DoWork);
             // 
+            // fileSystemWatcher1
+            // 
+            this.fileSystemWatcher1.EnableRaisingEvents = true;
+            this.fileSystemWatcher1.IncludeSubdirectories = true;
+            this.fileSystemWatcher1.SynchronizingObject = this;
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.Image = global::DataDepositer.Properties.Resources.Control_Panel_icon_25x25;
+            this.btnSettings.Location = new System.Drawing.Point(140, 525);
+            this.btnSettings.Margin = new System.Windows.Forms.Padding(0);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(25, 25);
+            this.btnSettings.TabIndex = 9;
+            this.btnSettings.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 561);
+            this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.labelFileName);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -170,8 +191,11 @@
             this.Text = "Data Depositor (c)";
             this.TopMost = true;
             this.Deactivate += new System.EventHandler(this.MainForm_Deactivate);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.MainForm_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.MainForm_DragEnter);
+            ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -191,6 +215,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label labelFileName;
         private System.ComponentModel.BackgroundWorker bgwNetwork;
+        private System.IO.FileSystemWatcher fileSystemWatcher1;
+        private System.Windows.Forms.Button btnSettings;
     }
 }
 

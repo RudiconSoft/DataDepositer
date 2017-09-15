@@ -166,5 +166,14 @@ namespace DataDepositer
 
             return sfh;
         }
+
+        // @return string with current application data folder
+
+        public string GetCurrentAppDataFolder()
+        {
+            string res = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            return res;
+        }
     }
 }

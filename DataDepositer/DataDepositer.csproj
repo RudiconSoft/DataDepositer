@@ -71,9 +71,16 @@
     <Compile Include="FileData.cs" />
     <Compile Include="FileManipulator.cs" />
     <Compile Include="FileWatcher.cs" />
+    <Compile Include="IniFile.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MainFormProcessing.cs" />
     <Compile Include="Serializer.cs" />
+    <Compile Include="Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
     <Compile Include="SetUserForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +97,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserData.cs" />
+    <EmbeddedResource Include="Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SetUserForm.resx">
       <DependentUpon>SetUserForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -106,6 +116,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Content Include="Images\Control-Panel-icon-25x25.png" />
+    <Content Include="Images\Control-Panel-icon.png" />
+    <Content Include="Images\gear_64x64.ico" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

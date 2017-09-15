@@ -63,6 +63,26 @@ namespace DataDepositer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Control_Panel_icon {
+            get {
+                object obj = ResourceManager.GetObject("Control-Panel-icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Control_Panel_icon_25x25 {
+            get {
+                object obj = ResourceManager.GetObject("Control-Panel-icon-25x25", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Treasurechest {
             get {
                 object obj = ResourceManager.GetObject("Treasurechest", resourceCulture);
