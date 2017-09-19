@@ -68,14 +68,14 @@ namespace DataDepositer
         //                      Fix partSize calc
         //                      Remove file exist check
 
-        public bool SplitFile(string FileInputPath, string sSourceFileName, string FolderOutputPath, int OutputFiles)
+        public bool SplitFile(string FileInputPath,  string FolderOutputPath, int OutputFiles)
         {
             try
             {
                 // Store the file in a byte array
                 Byte[] byteSource = System.IO.File.ReadAllBytes(FileInputPath);
                 // Get file info
-                FileInfo fiSource = new FileInfo(sSourceFileName);
+                FileInfo fiSource = new FileInfo(FileInputPath);
                 // Calculate the size of each part
                 // int partSize = (int)Math.Ceiling((double)(fiSource.Length / OutputFiles)); // !!!!! ERROR lost last byte possible
 
@@ -115,6 +115,75 @@ namespace DataDepositer
                         fsPart.Close();
                         fileOffset += partSize;
                     }
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Logger.Log.Error(e.ToString());
+                return false;
+            }
+        }
+
+        // @return true if success write all parts and add headers
+        //
+       public bool SplitFile(string FileInputPath, string FolderOutputPath, uint OutputFiles, STORED_FILE_HEADER originSFH)
+        {
+            try
+            {
+                //FileManipulator fm = new FileManipulator();
+                Helper h = new Helper();
+
+                // Store the file in a byte array
+                Byte[] byteSource = System.IO.File.ReadAllBytes(FileInputPath);
+                // Get file info
+                FileInfo fiSource = new FileInfo(FileInputPath);
+                // Calculate the size of each part
+                uint partSize = (uint) Math.Ceiling((double)(fiSource.Length / OutputFiles)) + 1;
+                // The offset at which to start reading from the source file
+                uint fileOffset = 0;
+
+                // Stores the name of each file part
+                string currPartPath;
+
+                // Stores the remaining byte length to write to other files
+                uint sizeRemaining = (uint) fiSource.Length;
+
+                // Create output folder if not exist
+                Directory.CreateDirectory(FolderOutputPath);
+
+                // Loop through as many times we need to create the partial files
+                for (uint i = 0; i < OutputFiles; i++)
+                {
+                    STORED_FILE_HEADER sfh = originSFH;
+
+                    // fill header for each part
+                    sfh.ChunkNum = i;
+                    sfh.ChunkNum = OutputFiles;
+
+                    // Calculate the remaining size of the whole file
+                    sizeRemaining = (uint)fiSource.Length - (i * partSize);
+
+                    // The size of the last part file might differ because a file doesn't always split equally
+                    if (sizeRemaining < partSize)
+                    {
+                        partSize = sizeRemaining;
+                    }
+
+                    // create partbuf for part bytes
+                    byte[] partbuf = new byte[partSize];
+
+                    // Store the path of the new part
+                    currPartPath = FolderOutputPath + "\\" + fiSource.Name + "." + String.Format(@"{0:D4}", i) + ".part";
+                    sfh.FileName = currPartPath;
+
+                    // write part of file into file
+                    Buffer.BlockCopy(byteSource, (int)fileOffset, partbuf, 0, (int)partSize);
+                    sfh.MD5Chunk = h.GetStringMD5(partbuf);
+
+                    WriteFileWithHeader(currPartPath, partbuf, sfh);
+
+                    fileOffset += partSize;
                 }
                 return true;
             }
@@ -178,6 +247,34 @@ namespace DataDepositer
                 return true;
             }
             catch(Exception e)
+            {
+                Logger.Log.Error(e.ToString());
+                return false;
+            }
+        }
+
+
+        // @return true if success Add header to file
+        public bool WriteFileWithHeader(string sFullPath, byte[] fileBytes, STORED_FILE_HEADER header)
+        {
+            try
+            {
+                // create byte arrays with header and file.
+                Helper h = new Helper();
+                byte[] bs = h.RawSerialize(header);
+
+                FileInfo fi = new FileInfo(sFullPath);
+                fi.Delete();
+
+                FileStream fsSource = new FileStream(sFullPath, FileMode.Append);
+                fsSource.Write(bs, 0, bs.Length);
+                fsSource.Write(fileBytes, 0, fileBytes.Length);
+
+                fsSource.Close();
+
+                return true;
+            }
+            catch (Exception e)
             {
                 Logger.Log.Error(e.ToString());
                 return false;

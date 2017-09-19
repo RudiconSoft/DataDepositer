@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.IO.Compression;
+using System.Runtime.InteropServices;
 
 namespace DataDepositer
 {
@@ -62,11 +64,10 @@ namespace DataDepositer
 
         private void InitConfig()
         {
-            //if (File.Exists("config.ini"))
             if (INI.Exists())
             {
-                    // read data from INI
-                    config.FromINI(INI);
+                // read data from INI
+                config.FromINI(INI);
             }
             else
             {
@@ -103,10 +104,14 @@ namespace DataDepositer
             // Get file name
             if (res == DialogResult.OK)
             {
-                string filename = openFileDialog.FileName;
-                // Read file
-                isFileSelected = true;
-                labelFileName.Text = Path.GetFileName(filename);
+                //                string filename = openFileDialog.FileName;
+                //                // Read file
+                //                isFileSelected = true;
+                ////                labelFileName.Text = Path.GetFileName(filename);
+                //                labelFileName.Text = filename;
+                //                file.SetFileName(filename);
+
+                setFileName(openFileDialog.FileName);
             }
         }
 
@@ -122,10 +127,6 @@ namespace DataDepositer
                 //isUserDefined = true;
             }
             this.Visible = true;
-
-           
-
-            
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -143,17 +144,6 @@ namespace DataDepositer
                 Logger.Log.Info("Drag&Drop file : " + fn);
                 setFileName(fn);
             }
-
-
-            //if (true)
-            //{
-            //    foreach (string file in files)
-            //    {
-            //        Logger.Log.Info("Drag&Drop file : " + file);
-            //        //new MainFormProcessing().
-
-            //    }
-            //}
         }
 
         private void MainForm_DragEnter(object sender, DragEventArgs e)
@@ -165,6 +155,37 @@ namespace DataDepositer
         {
             if (isFileSelected && user.IsSet)
             {
+                STORED_FILE_HEADER sh = new STORED_FILE_HEADER();
+                Helper helper = new Helper();
+                FileManipulator fm = new FileManipulator();
+                
+                // pack file
+                Directory.CreateDirectory(config.TempFolder);
+                var fileInputName = file.GetFileName();
+                byte[] buffer = File.ReadAllBytes(fileInputName);
+
+                FileInfo fi = new FileInfo(fileInputName);
+                sh.cb = (uint)Marshal.SizeOf(sh); // header size
+                sh.OriginSize = (ulong) fi.Length;
+                sh.MD5Origin = new Helper().GetFileMD5(fileInputName);
+
+                var fileOutputName = config.TempFolder + "\\" + Path.GetFileName(file.GetFileName());
+                using (var file = File.Open(fileOutputName, FileMode.Create))
+                using (var stream = new DeflateStream(file, CompressionMode.Compress))
+                using (var writer = new BinaryWriter(stream))
+                {
+                    writer.Write(buffer);
+                }
+
+                // encrypt file
+                byte[] buff = File.ReadAllBytes(fileOutputName);
+                var fileOutputNameEncrypted = config.TempFolder + "\\" + Path.GetFileName(file.GetFileName()) + @".enc";
+                new AESEnDecryption().BinarySaveObjectWithAes(buff, fileOutputNameEncrypted, user.GetName(), user.GetPassword());
+
+                // split file 
+                fm.SplitFile(fileOutputNameEncrypted, config.SendFolder, config.Chunks, sh);
+
+                // @TODO Add SendList filling
 
             }
         }
@@ -194,6 +215,7 @@ namespace DataDepositer
             {
                 file.SetFileName(filename);
                 labelFileName.Text = filename;
+                isFileSelected = true;
             }
             else
             {

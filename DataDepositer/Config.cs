@@ -33,18 +33,22 @@ namespace DataDepositer
         public uint Port; // 13027
         public uint StorageSize;// = 1024 * 1024 * 1024; // 1Gb
 
+        public uint Chunks; // 3
+
         public Config()
         {
             string appdata = new Helper().GetCurrentAppDataFolder();
 
             AppDataFolder   = appdata       + "\\DataDepositor";
-            StorageFolder   = AppDataFolder + "\\Storage";
-            SendFolder      = AppDataFolder + "\\Send";
-            AssembleFolder  = AppDataFolder + "\\Assemble";
-            TempFolder      = AppDataFolder + "\\Temp"; // @TODO add clean after exit.
+            StorageFolder   = AppDataFolder + "\\Storage\\";
+            SendFolder      = AppDataFolder + "\\Send\\";
+            AssembleFolder  = AppDataFolder + "\\Assemble\\";
+            TempFolder      = AppDataFolder + "\\Temp\\"; // @TODO add clean after exit.
 
             StorageSize = 3 * 1024 * 1024; // 1Gb
             Port = 13027;
+
+            Chunks = 3;
 
     }
 
@@ -64,6 +68,7 @@ namespace DataDepositer
             Port = Convert.ToUInt16(ini.Read(GetNetworkSectionText(), GetPortText()));
 
             // Parameters
+            Chunks = Convert.ToUInt16(ini.Read(GetParamSectionText(), GetChunksText()));
 
         }
 
@@ -81,8 +86,10 @@ namespace DataDepositer
              ini.Write(GetNetworkSectionText(), GetDDNSUserNameText(), DDNSUserName);
              ini.Write(GetNetworkSectionText(), GetDDNSPasswordText(), DDNSPassword);
              ini.Write(GetNetworkSectionText(), GetPortText(), Convert.ToString(Port));
-            
+
             // Paramerets
+             ini.Write(GetParamSectionText(), GetChunksText(), Convert.ToString(Chunks));
+
         }
 
         /// <summary>
@@ -134,6 +141,15 @@ namespace DataDepositer
         {
             return "Port";
         }
+
+        /// <summary>
+        ///  Section for text names for Parameters Section INI file
+        /// </summary>
+        public string GetChunksText()
+        {
+            return "Chunks";
+        }
+
 
 
         /// <summary>

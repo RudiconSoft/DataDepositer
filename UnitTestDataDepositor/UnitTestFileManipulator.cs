@@ -16,13 +16,13 @@ namespace UnitTestDataDepositor
             DataDepositer.FileManipulator fm = new DataDepositer.FileManipulator();
 
             //            String fileName = "test.txt";
-            String fileName = "d:\\test\\datadepositor\\test.txt";
+            //String fileName = "d:\\test\\datadepositor\\test.txt";
             String filePath = "d:\\test\\datadepositor\\test.txt";
             String filePathParts = "d:\\test\\datadepositor\\parts";
             
             int num = 3;
 
-            bool isOk = fm.SplitFile(filePath, fileName, filePathParts, num);
+            bool isOk = fm.SplitFile(filePath, filePathParts, num);
 
             if (!isOk)
             {

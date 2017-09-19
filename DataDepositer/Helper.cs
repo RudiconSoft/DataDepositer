@@ -47,7 +47,7 @@ namespace DataDepositer
     //}
 
     [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
-    public struct STORED_FILE_HEADER // (660 in Unicode)
+    public struct STORED_FILE_HEADER // (668 in Unicode)
     {
         public uint cb;             // Structure size // 4 // indicator for non-initialized struct
 
@@ -60,13 +60,13 @@ namespace DataDepositer
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         public string MD5Chunk;     // String MD5 of chunk
 
-        public uint ChunksQty;      // Chunks qty // 4
+        public UInt64 ChunksQty;      // Chunks qty // 8
 
-        public uint ChunkNum;       // Chunks number // 4
+        public UInt64 ChunkNum;       // Chunks number // 8
 
-        public uint OriginSzie;     // origin file size //4
+        public UInt64 OriginSize;     // origin file size //8
 
-        public uint ChunkSize;      // chunk size   //4
+        public UInt64 ChunkSize;      // chunk size   //8
     }
 
 
@@ -78,17 +78,45 @@ namespace DataDepositer
         {
             MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
 
-            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(key);
+            //byte[] inputBytes = Encoding.ASCII.GetBytes(key);
+            byte[] inputBytes = Encoding.Unicode.GetBytes(key);
             byte[] hashBytes = md5.ComputeHash(inputBytes);
 
-            // Convert the byte array to hexadecimal string
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hashBytes.Length; i++)
-            {
-                sb.Append(hashBytes[i].ToString("X2"));
-            }
-            return sb.ToString();
+            //// Convert the byte array to hexadecimal string
+            //StringBuilder sb = new StringBuilder();
+            //for (int i = 0; i < hashBytes.Length; i++)
+            //{
+            //    sb.Append(hashBytes[i].ToString("X2"));
+            //}
+            //return sb.ToString();
+            return Convert.ToBase64String(hashBytes);
         }
+
+        public String GetStringMD5(byte[] inputBytes)
+        {
+            byte[] hashBytes = new MD5CryptoServiceProvider().ComputeHash(inputBytes);
+
+            return Convert.ToBase64String(hashBytes);
+        }
+
+        public string GetFileMD5(String filename)
+        {
+            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+
+            FileStream fs = File.OpenRead(filename);
+            byte[] hashBytes = md5.ComputeHash(fs);
+
+            //// Convert the byte array to hexadecimal string
+            //StringBuilder sb = new StringBuilder();
+            //for (int i = 0; i < hashBytes.Length; i++)
+            //{
+            //    sb.Append(hashBytes[i].ToString("X2"));
+            //}
+            //return sb.ToString();
+            return Convert.ToBase64String(hashBytes);
+        }
+
+        //MD5CryptoServiceProvider.ComputeHash(Stream)
 
         //
         // Read struct bytes from filesteram and return struct
@@ -148,7 +176,7 @@ namespace DataDepositer
                                                 string MD5Chunk,     // String MD5 of chunk
                                                 uint ChunksQty,      // Chunks qty 
                                                 uint ChunkNum,       // Chunks number 
-                                                uint OriginSzie,     // origin file size 
+                                                uint OriginSize,     // origin file size 
                                                 uint ChunkSize       // chunk size   
                                             )
         {
@@ -159,7 +187,7 @@ namespace DataDepositer
             sfh.MD5Chunk = MD5Chunk;
             sfh.ChunksQty = ChunksQty;
             sfh.ChunkNum = ChunkNum;
-            sfh.OriginSzie = OriginSzie;
+            sfh.OriginSize = OriginSize;
             sfh.ChunkSize = ChunkSize;
 
             sfh.cb = (uint) System.Runtime.InteropServices.Marshal.SizeOf(sfh); // size of struct
