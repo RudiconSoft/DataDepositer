@@ -1,4 +1,12 @@
-﻿using System;
+﻿/**
+ *  RuDiCon Soft (c) 2017
+ * 
+ *  Program Entry point.
+ *  
+ *  @created 2017-09-19 Artem Nikolaev
+ *  
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,16 +27,23 @@ namespace DataDepositer
         {
 
             Logger.Log.Info(DateTime.Now.ToString() + "  Start DataDepositor.");
+            bool IsExit = false;
+            uint ErrorCounter = 0; // 20 for prevent undefined loop
 
-            try
+            while (!IsExit && ErrorCounter < 20)
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new MainForm());
-            }
-            catch (Exception e)
-            {
-                Logger.Log.Error(e.Message);
+                try
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new MainForm());
+                    IsExit = true;
+                }
+                catch (Exception e)
+                {
+                    Logger.Log.Error(e.Message);
+                    ErrorCounter++;
+                }
             }
         }
     }
