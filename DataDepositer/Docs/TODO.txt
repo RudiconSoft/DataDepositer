@@ -1,2 +1,4 @@
-﻿2017-08-28	- Create First Iteration of Data Depositor
-2017-08-29	- Add new Forms for SetUser Name & Password, Open File, 
+﻿2017-09-19	- Create full version of config
++2017-09-10	- Create INI file class
++2017-08-28	- Create First Iteration of Data Depositor
++2017-08-29	- Add new Forms for SetUser Name & Password, Open File, 

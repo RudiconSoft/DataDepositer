@@ -32,12 +32,15 @@ namespace DataDepositer.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1073741824")]
         public uint localStrorageSize {
             get {
                 return ((uint)(this["localStrorageSize"]));
+            }
+            set {
+                this["localStrorageSize"] = value;
             }
         }
         
@@ -59,21 +62,27 @@ namespace DataDepositer.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public uint PartsCount {
             get {
                 return ((uint)(this["PartsCount"]));
             }
+            set {
+                this["PartsCount"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public uint PCCount {
             get {
                 return ((uint)(this["PCCount"]));
+            }
+            set {
+                this["PCCount"] = value;
             }
         }
         

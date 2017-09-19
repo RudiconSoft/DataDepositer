@@ -39,6 +39,11 @@ namespace DataDepositer
                     Application.Run(new MainForm());
                     IsExit = true;
                 }
+                catch(NotImplementedException e)
+                {
+                    MessageBox.Show("NotImplementedException Exception detected!!!!");
+                    throw;
+                }
                 catch (Exception e)
                 {
                     Logger.Log.Error(e.Message);

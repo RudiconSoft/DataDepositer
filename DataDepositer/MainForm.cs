@@ -19,11 +19,61 @@ namespace DataDepositer
         bool isFileSelected = false;
         bool isUserDefined = false;
         IniFile INI = new IniFile("config.ini");
+        Config config = new Config();
+
+        // empty lists
+        List<FileInfo> StorageList = new List<FileInfo>();
+        List<FileInfo> SendList = new List<FileInfo>();
+        List<FileInfo> AssembleList = new List<FileInfo>();
 
 
         public MainForm()
         {
             InitializeComponent();
+            InitConfig();
+
+            // init internal storages with
+            InitLists();
+        }
+
+        // init lsits with data.
+        private void InitLists()
+        {
+            //InitStorageList();
+            //InitSendList();
+            //InitAssembleList();
+        }
+
+        private void InitAssembleList()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void InitSendList()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void InitStorageList()
+        {
+
+            throw new NotImplementedException();
+        }
+
+        private void InitConfig()
+        {
+            //if (File.Exists("config.ini"))
+            if (INI.Exists())
+            {
+                    // read data from INI
+                    config.FromINI(INI);
+            }
+            else
+            {
+                // create INI file or use settings ?
+                config.ToINI(INI);
+            }
+            
         }
 
         private void MainForm_Deactivate(object sender, EventArgs e)

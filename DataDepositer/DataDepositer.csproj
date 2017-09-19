@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="AESEnDecryption.cs" />
     <Compile Include="BackgroundDNSUpdater.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="FileData.cs" />
     <Compile Include="FileManipulator.cs" />
     <Compile Include="FileWatcher.cs" />
@@ -97,6 +98,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StorageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StorageForm.Designer.cs">
+      <DependentUpon>StorageForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserData.cs" />
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
@@ -123,6 +130,9 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="StorageForm.resx">
+      <DependentUpon>StorageForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

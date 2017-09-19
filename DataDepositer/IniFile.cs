@@ -6,14 +6,15 @@
  *  @created 2017-09-15 Artem Nikolaev 
  * 
  */
- using System.IO;
+using System;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace DataDepositer
 {
-    class IniFile
+    public class IniFile
     {
         string Path; //Имя файла.
 
@@ -40,6 +41,11 @@ namespace DataDepositer
         public void Write(string Section, string Key, string Value)
         {
             WritePrivateProfileString(Section, Key, Value, Path);
+        }
+
+        internal bool Exists()
+        {
+            return File.Exists(Path);
         }
 
         //Удаляем ключ из выбранной секции.

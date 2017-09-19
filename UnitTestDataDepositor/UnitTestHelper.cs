@@ -70,5 +70,27 @@ namespace UnitTestDataDepositor
                 throw new Exception();
             }
         }
+
+        [TestMethod]
+        public void INIFileClass_TestMethod()
+        {
+            IniFile ini = new IniFile("testconfig.ini");
+            Config conf = new Config();
+            // Create sections
+            conf.ToINI(ini);
+
+            // Read sections
+            conf.FromINI(ini);
+
+            // change/ add sections
+
+            conf.DDNSAddress = "soft.rudicon.ddns.net";
+            conf.DDNSUserName = "soft.rudicon";
+            conf.DDNSPassword = "soft.ddnspass";
+
+            IniFile ini1 = new IniFile("testconfig_changed.ini");
+            conf.ToINI(ini1);
+
+        }
     }
 }
