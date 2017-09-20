@@ -37,7 +37,7 @@
             this.labelName = new System.Windows.Forms.Label();
             this.buttonSetUser = new System.Windows.Forms.Button();
             this.btnStartProcess = new System.Windows.Forms.Button();
-            this.FileDescriptionTextBox = new System.Windows.Forms.TextBox();
+            this.tbFileDescription = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.labelFileName = new System.Windows.Forms.Label();
@@ -114,16 +114,18 @@
             this.btnStartProcess.UseVisualStyleBackColor = true;
             this.btnStartProcess.Click += new System.EventHandler(this.btnStartProcess_Click);
             // 
-            // FileDescriptionTextBox
+            // tbFileDescription
             // 
-            this.FileDescriptionTextBox.Location = new System.Drawing.Point(16, 295);
-            this.FileDescriptionTextBox.MaxLength = 256;
-            this.FileDescriptionTextBox.Multiline = true;
-            this.FileDescriptionTextBox.Name = "FileDescriptionTextBox";
-            this.FileDescriptionTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.FileDescriptionTextBox.Size = new System.Drawing.Size(256, 100);
-            this.FileDescriptionTextBox.TabIndex = 5;
-            this.FileDescriptionTextBox.Text = "Enter file descryption here ...";
+            this.tbFileDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbFileDescription.Location = new System.Drawing.Point(16, 295);
+            this.tbFileDescription.MaxLength = 256;
+            this.tbFileDescription.Multiline = true;
+            this.tbFileDescription.Name = "tbFileDescription";
+            this.tbFileDescription.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.tbFileDescription.Size = new System.Drawing.Size(256, 100);
+            this.tbFileDescription.TabIndex = 5;
+            this.tbFileDescription.Text = "Enter file descryption here ...";
             // 
             // label2
             // 
@@ -199,7 +201,7 @@
             this.Controls.Add(this.labelFileName);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.FileDescriptionTextBox);
+            this.Controls.Add(this.tbFileDescription);
             this.Controls.Add(this.btnStartProcess);
             this.Controls.Add(this.buttonSetUser);
             this.Controls.Add(this.labelName);
@@ -233,7 +235,7 @@
         private System.Windows.Forms.Label labelName;
         private System.Windows.Forms.Button buttonSetUser;
         private System.Windows.Forms.Button btnStartProcess;
-        private System.Windows.Forms.TextBox FileDescriptionTextBox;
+        private System.Windows.Forms.TextBox tbFileDescription;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label labelFileName;

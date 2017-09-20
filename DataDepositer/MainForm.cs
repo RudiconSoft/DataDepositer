@@ -27,7 +27,7 @@ namespace DataDepositer
         Config config = new Config();
 
         // empty lists
-        List<FileInfo> StorageList = new List<FileInfo>();
+        List<StorageItem> StorageList = new List<StorageItem>();
         List<FileInfo> SendList = new List<FileInfo>();
         List<FileInfo> AssembleList = new List<FileInfo>();
 
@@ -44,7 +44,7 @@ namespace DataDepositer
         // init lists with data.
         private void InitLists()
         {
-            //InitStorageList();
+            InitStorageList();
             //InitSendList();
             //InitAssembleList();
         }
@@ -61,8 +61,8 @@ namespace DataDepositer
 
         private void InitStorageList()
         {
+            //FileInfo fi 
 
-            throw new NotImplementedException();
         }
 
         private void InitConfig()
@@ -151,6 +151,7 @@ namespace DataDepositer
             if (isFileSelected && user.IsSet)
             {
                 STORED_FILE_HEADER sh = new STORED_FILE_HEADER();
+                sh.Description = tbFileDescription.Text;
                 Helper helper = new Helper();
                 FileManipulator fm = new FileManipulator();
                 

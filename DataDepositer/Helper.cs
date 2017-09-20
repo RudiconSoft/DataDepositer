@@ -54,8 +54,11 @@ namespace DataDepositer
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
         public string FileName;     // Short file name
 
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+        public string Description;     // Short file name
+
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-        public string MD5Origin;    // String MD5 of origin file
+        public string MD5Origin;    // String MD5 of origin file //@TODO (Base64 or text) 
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         public string MD5Chunk;     // String MD5 of chunk
@@ -116,7 +119,6 @@ namespace DataDepositer
             return Convert.ToBase64String(hashBytes);
         }
 
-        //MD5CryptoServiceProvider.ComputeHash(Stream)
 
         //
         // Read struct bytes from filesteram and return struct
@@ -172,6 +174,7 @@ namespace DataDepositer
         // fill STORED_FILE_HEADER
         public STORED_FILE_HEADER FillHeader(   
                                                 string FileName,     // Short file name
+                                                string Desc,         // Description
                                                 string MD5Origin,    // String MD5 of origin file
                                                 string MD5Chunk,     // String MD5 of chunk
                                                 uint ChunksQty,      // Chunks qty 
@@ -183,6 +186,7 @@ namespace DataDepositer
             STORED_FILE_HEADER sfh = new STORED_FILE_HEADER();
 
             sfh.FileName = FileName;
+            sfh.Description = Desc;
             sfh.MD5Origin = MD5Origin;
             sfh.MD5Chunk = MD5Chunk;
             sfh.ChunksQty = ChunksQty;
@@ -190,7 +194,7 @@ namespace DataDepositer
             sfh.OriginSize = OriginSize;
             sfh.ChunkSize = ChunkSize;
 
-            sfh.cb = (uint) System.Runtime.InteropServices.Marshal.SizeOf(sfh); // size of struct
+            sfh.cb = (uint) Marshal.SizeOf(sfh); // size of struct
 
             return sfh;
         }

@@ -104,6 +104,7 @@
     <Compile Include="StorageForm.Designer.cs">
       <DependentUpon>StorageForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="StorageItem.cs" />
     <Compile Include="UserData.cs" />
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
@@ -133,6 +134,8 @@
     <EmbeddedResource Include="StorageForm.resx">
       <DependentUpon>StorageForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

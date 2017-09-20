@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 
 namespace DataDepositer
 {
-    public static class Serializer
+    public static class ObjectSerializer
     {
         // @return raw data of given object
         public static byte[] RawSerialize(object anything)

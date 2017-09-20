@@ -175,7 +175,7 @@ namespace DataDepositer
 
                     // Store the path of the new part
                     currPartPath = FolderOutputPath + "\\" + fiSource.Name + "." + String.Format(@"{0:D4}", i) + ".part";
-                    sfh.FileName = currPartPath;
+                    sfh.FileName = Path.GetFileName(currPartPath);
 
                     // write part of file into file
                     Buffer.BlockCopy(byteSource, (int)fileOffset, partbuf, 0, (int)partSize);
