@@ -15,7 +15,10 @@ namespace DataDepositer
 {
     public partial class MainForm : Form
     {
-        SetUserForm setUserForm = new SetUserForm();
+        SetUserForm formSetUser = new SetUserForm();
+        StorageForm formStorage = new StorageForm();
+        SettingsForm formSettings = new SettingsForm();
+
         UserData user = new UserData();
         FileData file = new FileData();
         bool isFileSelected = false;
@@ -38,7 +41,7 @@ namespace DataDepositer
             InitLists();
         }
 
-        // init lsits with data.
+        // init lists with data.
         private void InitLists()
         {
             //InitStorageList();
@@ -99,18 +102,10 @@ namespace DataDepositer
         private void openFileDialogButton_Click(object sender, EventArgs e)
         {
             DialogResult res = openFileDialog.ShowDialog();
-            //if (openFileDialog.ShowDialog() == DialogResult.Cancel)
-            //   return;
+
             // Get file name
             if (res == DialogResult.OK)
             {
-                //                string filename = openFileDialog.FileName;
-                //                // Read file
-                //                isFileSelected = true;
-                ////                labelFileName.Text = Path.GetFileName(filename);
-                //                labelFileName.Text = filename;
-                //                file.SetFileName(filename);
-
                 setFileName(openFileDialog.FileName);
             }
         }
@@ -118,11 +113,11 @@ namespace DataDepositer
         private void buttonSetUser_Click(object sender, EventArgs e)
         {
             this.Visible = false;
-            DialogResult res = setUserForm.ShowDialog();
+            DialogResult res = formSetUser.ShowDialog();
 
             if (res != DialogResult.Cancel)
             {
-                user.SetUserData(setUserForm.userName, setUserForm.password);
+                user.SetUserData(formSetUser.userName, formSetUser.password);
                 labelName.Text = user.GetName();
                 //isUserDefined = true;
             }
@@ -179,13 +174,17 @@ namespace DataDepositer
 
                 // encrypt file
                 byte[] buff = File.ReadAllBytes(fileOutputName);
-                var fileOutputNameEncrypted = config.TempFolder + "\\" + Path.GetFileName(file.GetFileName()) + @".enc";
-                new AESEnDecryption().BinarySaveObjectWithAes(buff, fileOutputNameEncrypted, user.GetName(), user.GetPassword());
+//                var fileOutputNameEncrypted = config.TempFolder + "\\" + Path.GetFileName(file.GetFileName()) + @".enc";
+//                new AESEnDecryption().BinarySaveObjectWithAes(buff, fileOutputNameEncrypted, user.GetName(), user.GetPassword());
+                new AESEnDecryption().BinarySaveObjectWithAes(buff, fileOutputName, user.GetName(), user.GetPassword());
 
                 // split file 
-                fm.SplitFile(fileOutputNameEncrypted, config.SendFolder, config.Chunks, sh);
+//                fm.SplitFile(fileOutputNameEncrypted, config.SendFolder, config.Chunks, sh);
+                fm.SplitFile(fileOutputName, config.SendFolder, config.Chunks, sh);
 
                 // @TODO Add SendList filling
+                DirectoryInfo di = new DirectoryInfo(config.SendFolder);
+
 
             }
         }
@@ -248,5 +247,31 @@ namespace DataDepositer
             //this.Width = int.Parse(numericUpDown2.Value.ToString());
         }
 
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            this.Visible = false;
+            DialogResult res = formSettings.ShowDialog();
+
+            if (res != DialogResult.Cancel)
+            {
+                // save settings
+
+            }
+            this.Visible = true;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Visible = false;
+            DialogResult res = formStorage.ShowDialog();
+
+            if (res != DialogResult.Cancel)
+            {
+                // @TODO implementation
+
+            }
+            this.Visible = true;
+
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace DataDepositer
 {
-    partial class Settings
+    partial class SettingsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.label1 = new System.Windows.Forms.Label();
             this.tbStorageSize = new System.Windows.Forms.TextBox();
             this.btnOk = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnCreateINIFile = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
@@ -63,15 +63,16 @@
             this.btnOk.TabIndex = 2;
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
-            // button1
+            // btnCreateINIFile
             // 
-            this.button1.Location = new System.Drawing.Point(12, 294);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(200, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Create INI file";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnCreateINIFile.Location = new System.Drawing.Point(12, 294);
+            this.btnCreateINIFile.Name = "btnCreateINIFile";
+            this.btnCreateINIFile.Size = new System.Drawing.Size(200, 23);
+            this.btnCreateINIFile.TabIndex = 3;
+            this.btnCreateINIFile.Text = "Create INI file";
+            this.btnCreateINIFile.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -90,19 +91,21 @@
             this.textBox1.TabIndex = 5;
             this.textBox1.Text = "13027";
             // 
-            // Settings
+            // SettingsForm
             // 
+            this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(224, 381);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnCreateINIFile);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.tbStorageSize);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Settings";
+            this.Name = "SettingsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Settings";
             this.ResumeLayout(false);
@@ -115,7 +118,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbStorageSize;
         private System.Windows.Forms.Button btnOk;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnCreateINIFile;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox1;
     }

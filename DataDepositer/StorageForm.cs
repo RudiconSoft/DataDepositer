@@ -16,5 +16,15 @@ namespace DataDepositer
         {
             InitializeComponent();
         }
+
+        private void lvLocal_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lvSend_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

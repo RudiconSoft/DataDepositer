@@ -44,6 +44,7 @@
             this.bgwNetwork = new System.ComponentModel.BackgroundWorker();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.btnSettings = new System.Windows.Forms.Button();
+            this.btnViewStorage = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -63,6 +64,8 @@
             // 
             // openFileDialogButton
             // 
+            this.openFileDialogButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.openFileDialogButton.Location = new System.Drawing.Point(12, 526);
             this.openFileDialogButton.Name = "openFileDialogButton";
             this.openFileDialogButton.Size = new System.Drawing.Size(103, 23);
@@ -91,9 +94,11 @@
             // 
             // buttonSetUser
             // 
-            this.buttonSetUser.Location = new System.Drawing.Point(197, 525);
+            this.buttonSetUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSetUser.Location = new System.Drawing.Point(180, 525);
             this.buttonSetUser.Name = "buttonSetUser";
-            this.buttonSetUser.Size = new System.Drawing.Size(75, 23);
+            this.buttonSetUser.Size = new System.Drawing.Size(92, 23);
             this.buttonSetUser.TabIndex = 3;
             this.buttonSetUser.Text = "Set User";
             this.buttonSetUser.UseVisualStyleBackColor = true;
@@ -101,7 +106,7 @@
             // 
             // btnStartProcess
             // 
-            this.btnStartProcess.Location = new System.Drawing.Point(16, 442);
+            this.btnStartProcess.Location = new System.Drawing.Point(16, 418);
             this.btnStartProcess.Name = "btnStartProcess";
             this.btnStartProcess.Size = new System.Drawing.Size(256, 48);
             this.btnStartProcess.TabIndex = 4;
@@ -159,13 +164,29 @@
             // 
             // btnSettings
             // 
+            this.btnSettings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSettings.Image = global::DataDepositer.Properties.Resources.Control_Panel_icon_25x25;
-            this.btnSettings.Location = new System.Drawing.Point(140, 525);
+            this.btnSettings.Location = new System.Drawing.Point(137, 525);
             this.btnSettings.Margin = new System.Windows.Forms.Padding(0);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new System.Drawing.Size(25, 25);
             this.btnSettings.TabIndex = 9;
             this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            // 
+            // btnViewStorage
+            // 
+            this.btnViewStorage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnViewStorage.Location = new System.Drawing.Point(16, 487);
+            this.btnViewStorage.Name = "btnViewStorage";
+            this.btnViewStorage.Size = new System.Drawing.Size(256, 23);
+            this.btnViewStorage.TabIndex = 10;
+            this.btnViewStorage.TabStop = false;
+            this.btnViewStorage.Text = "View Storage";
+            this.btnViewStorage.UseVisualStyleBackColor = true;
+            this.btnViewStorage.Click += new System.EventHandler(this.button1_Click);
             // 
             // MainForm
             // 
@@ -173,6 +194,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 561);
+            this.Controls.Add(this.btnViewStorage);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.labelFileName);
             this.Controls.Add(this.label3);
@@ -188,6 +210,7 @@
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(300, 600);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Data Depositor (c)";
             this.TopMost = true;
             this.Deactivate += new System.EventHandler(this.MainForm_Deactivate);
@@ -217,6 +240,7 @@
         private System.ComponentModel.BackgroundWorker bgwNetwork;
         private System.IO.FileSystemWatcher fileSystemWatcher1;
         private System.Windows.Forms.Button btnSettings;
+        private System.Windows.Forms.Button btnViewStorage;
     }
 }
 

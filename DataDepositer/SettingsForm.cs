@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace DataDepositer
 {
-    public partial class Settings : Form
+    public partial class SettingsForm : Form
     {
-        public Settings()
+        public SettingsForm()
         {
             InitializeComponent();
+        }
+
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
