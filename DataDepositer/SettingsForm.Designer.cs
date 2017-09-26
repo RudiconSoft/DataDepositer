@@ -73,6 +73,7 @@
             this.btnCreateINIFile.TabIndex = 3;
             this.btnCreateINIFile.Text = "Create INI file";
             this.btnCreateINIFile.UseVisualStyleBackColor = true;
+            this.btnCreateINIFile.Click += new System.EventHandler(this.btnCreateINIFile_Click);
             // 
             // label2
             // 

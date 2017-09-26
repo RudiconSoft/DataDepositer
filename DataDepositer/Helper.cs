@@ -58,7 +58,7 @@ namespace DataDepositer
         public string Description;     // Short file name
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-        public string MD5Origin;    // String MD5 of origin file //@TODO (Base64 or text) 
+        public string MD5Origin;    // String MD5 of origin file //@TODO (Base64 or text ADB347..) 
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         public string MD5Chunk;     // String MD5 of chunk

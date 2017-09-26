@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
+using System.Xml.Serialization;
 
 namespace DataDepositer
 {
@@ -27,9 +28,9 @@ namespace DataDepositer
         Config config = new Config();
 
         // empty lists
-        List<StorageItem> StorageList = new List<StorageItem>();
-        List<FileInfo> SendList = new List<FileInfo>();
-        List<FileInfo> AssembleList = new List<FileInfo>();
+        //List<StorageItem> StorageList = new List<StorageItem>();
+        //List<FileInfo> SendList = new List<FileInfo>();
+        //List<FileInfo> AssembleList = new List<FileInfo>();
 
 
         public MainForm()
@@ -45,7 +46,7 @@ namespace DataDepositer
         private void InitLists()
         {
             InitStorageList();
-            //InitSendList();
+            InitSendList();
             //InitAssembleList();
         }
 
@@ -56,13 +57,84 @@ namespace DataDepositer
 
         private void InitSendList()
         {
-            throw new NotImplementedException();
+            //FileInfo fi 
+            if (File.Exists(config.StorageFolder + "List.xml"))
+            {
+                // Serialize list.xml
+                ReadStorageList();
+            }
+            else
+            {
+                // create new xml list from files in StorageFolder
+                CreateNewStorageList();
+            }
         }
 
         private void InitStorageList()
         {
-            //FileInfo fi 
+            if (File.Exists(config.StorageFolder + "List.xml"))
+            {
+                // Serialize list.xml
+                ReadStorageList();
+            }
+            else
+            {
+                // create new xml list from files in SendFolder
+                CreateNewStorageList();
+            }
 
+        }
+
+        private void ReadStorageList()
+        {
+            // Deserialize StorageList
+            XmlSerializer formatter = new XmlSerializer(typeof(List<StorageItem>));
+            using (FileStream fs = new FileStream(config.StorageFolder + "List.xml", FileMode.Open))
+            {
+                Vault.StorageList = (List<StorageItem>) formatter.Deserialize(fs); 
+            }
+        }
+
+        private void CreateNewStorageList()
+        {
+            DirectoryInfo di = new DirectoryInfo(config.StorageFolder);
+            if (di.Exists)
+            {
+                FileManipulator fm = new FileManipulator();
+                foreach (var f in di.GetFiles())
+                {
+                    try
+                    {
+                        // get header from file
+                        STORED_FILE_HEADER sfh = fm.GetHeaderFromFile(f.FullName);
+
+                        // fill StorageItem from header
+                        string originname = f.Name.Substring(0, f.Name.IndexOf(".part") - 5); // if string not found file name ignored
+                        StorageItem si = new StorageItem(sfh.FileName, originname, sfh.Description, sfh.OriginSize, (uint) sfh.ChunksQty, (uint) sfh.ChunkNum, sfh.MD5Chunk, sfh.MD5Origin);
+
+                        // add Storage item into List
+                        Vault.StorageList.Add(si);
+
+                    }
+                    catch (Exception e )
+                    {
+                        Logger.Log.Error("Error in StoredList creation process.");
+                        Logger.Log.Error(e.Message);
+                        //throw;
+                    }
+                }
+
+                // Serialize StorageList
+                XmlSerializer formatter = new XmlSerializer(typeof(List<StorageItem>));
+                using (FileStream fs = new FileStream(config.StorageFolder + "List.xml", FileMode.OpenOrCreate))
+                {
+                    formatter.Serialize(fs, Vault.StorageList);
+                }
+            }
+            else
+            {
+                di.Create(); // just create empty StoredFolder 
+            }
         }
 
         private void InitConfig()
@@ -264,6 +336,7 @@ namespace DataDepositer
         private void button1_Click(object sender, EventArgs e)
         {
             this.Visible = false;
+            formStorage.InitLists(Vault.StorageList, Vault.SendList, Vault.AssembleList);
             DialogResult res = formStorage.ShowDialog();
 
             if (res != DialogResult.Cancel)

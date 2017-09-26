@@ -59,7 +59,7 @@
             this.notifyIcon.BalloonTipText = "Data Depositor (c)";
             this.notifyIcon.BalloonTipTitle = "Data Depositor (c)";
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
-            this.notifyIcon.Text = "notifyIcon32x32";
+            this.notifyIcon.Text = "Click to open DataDepositor...";
             this.notifyIcon.Click += new System.EventHandler(this.notifyIcon_Click);
             // 
             // openFileDialogButton

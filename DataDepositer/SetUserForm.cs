@@ -35,7 +35,6 @@ namespace DataDepositer
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            
             //Close();
         }
 
@@ -43,16 +42,43 @@ namespace DataDepositer
         {
             if (tbUserName.Text.Length > 0 && tbPassword.Text.Length > 0)
             {
-                userName = tbUserName.Text;
-                password = tbPassword.Text;
+                if (tbPasswordRepeat.Text == tbPassword.Text)
+                {
+                    userName = tbUserName.Text;
+                    password = tbPassword.Text;
 
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Incorrectly repeat password!!", "ERROR !!! Password repeat incorrect !!!!!");
+                }
             }
             else
             {
                 MessageBox.Show("User Name and Password must not be EMPTY !!", "ERROR !!! Empty User Name or Password !!!!!");
             }
         }
+
+        private void tbPassword_TextChanged(object sender, EventArgs e)
+        {
+            validateLength();
+        }
+        private void tbPasswordRepeat_TextChanged(object sender, EventArgs e)
+        {
+            validateLength();
+        }
+
+        private void tbUserName_TextChanged(object sender, EventArgs e)
+        {
+            validateLength();
+        }
+
+        private void validateLength()
+        {
+            btnSetUser.Enabled = tbUserName.Text.Length != 0 && tbPassword.Text.Length > 5 && tbPasswordRepeat.Text.Length > 5;
+        }
+
     }
 }

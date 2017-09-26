@@ -49,12 +49,9 @@ namespace DataDepositer
             Port = 13027;
 
             Chunks = 3;
+        }
 
-
-
-    }
-
-    public void FromINI(IniFile ini)
+        public void FromINI(IniFile ini)
         {
             // Folders
             AppDataFolder = ini.Read(GetFolderSectionText(), GetAppDataFolderText());
@@ -71,7 +68,6 @@ namespace DataDepositer
 
             // Parameters
             Chunks = Convert.ToUInt16(ini.Read(GetParamSectionText(), GetChunksText()));
-
         }
 
         public void ToINI(IniFile ini)
@@ -91,7 +87,6 @@ namespace DataDepositer
 
             // Paramerets
              ini.Write(GetParamSectionText(), GetChunksText(), Convert.ToString(Chunks));
-
         }
 
         /// <summary>
@@ -170,6 +165,13 @@ namespace DataDepositer
         public string GetNetworkSectionText()
         {
             return "Network";
+        }
+
+        public string[] GetLocalStorageViewColumns()
+        {
+            string[] columns = { "File Name", "Description", "Size", "Chunks", "Status" };
+
+            return columns;
         }
     }
 }

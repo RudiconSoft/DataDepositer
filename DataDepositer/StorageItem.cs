@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -45,5 +46,22 @@ namespace DataDepositer
             MD5Origin = md5origin;
         }
 
+        public string[] ToViewStrings
+        {
+            get
+            {
+                string[] str = new string[6];
+                //string[] str = new string[]{ };
+
+                str[0] = Name;
+                str[1] = OriginName;
+                str[2] = Description;
+                str[3] = Convert.ToString(Size);
+                str[4] = Convert.ToString(ChunkNum);
+                str[5] = Convert.ToString(Chunks);
+
+                return str;
+            }
+        }
     }
 }

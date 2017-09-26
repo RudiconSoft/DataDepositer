@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestDataDepositor", "Un
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RudiconNetwork", "RudiconNetwork\RudiconNetwork.csproj", "{EDDEA6E8-3F57-4BCC-B3DA-A54EBE12CC46}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeachTest", "SpeachTest\SpeachTest.csproj", "{CA24C5A2-F899-4E9F-B035-FEF6014C2CC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeachTestConsole", "SpeachTestConsole\SpeachTestConsole.csproj", "{4504A0A7-3B15-4D18-A1B0-A8EE17D85CF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{EDDEA6E8-3F57-4BCC-B3DA-A54EBE12CC46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDDEA6E8-3F57-4BCC-B3DA-A54EBE12CC46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDDEA6E8-3F57-4BCC-B3DA-A54EBE12CC46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA24C5A2-F899-4E9F-B035-FEF6014C2CC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA24C5A2-F899-4E9F-B035-FEF6014C2CC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA24C5A2-F899-4E9F-B035-FEF6014C2CC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA24C5A2-F899-4E9F-B035-FEF6014C2CC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4504A0A7-3B15-4D18-A1B0-A8EE17D85CF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4504A0A7-3B15-4D18-A1B0-A8EE17D85CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4504A0A7-3B15-4D18-A1B0-A8EE17D85CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4504A0A7-3B15-4D18-A1B0-A8EE17D85CF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
