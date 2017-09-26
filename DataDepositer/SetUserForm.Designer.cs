@@ -37,6 +37,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.tbPasswordRepeat = new System.Windows.Forms.TextBox();
+            this.labelImage = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnSetUser
@@ -89,7 +90,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(147, 144);
+            this.btnCancel.Location = new System.Drawing.Point(174, 144);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 5;
@@ -115,13 +116,22 @@
             this.tbPasswordRepeat.TabIndex = 3;
             this.tbPasswordRepeat.TextChanged += new System.EventHandler(this.tbPasswordRepeat_TextChanged);
             // 
+            // labelImage
+            // 
+            this.labelImage.Image = global::DataDepositer.Properties.Resources.red_invalid1;
+            this.labelImage.Location = new System.Drawing.Point(217, 46);
+            this.labelImage.Name = "labelImage";
+            this.labelImage.Size = new System.Drawing.Size(32, 32);
+            this.labelImage.TabIndex = 6;
+            // 
             // SetUserForm
             // 
             this.AcceptButton = this.btnSetUser;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(234, 175);
+            this.ClientSize = new System.Drawing.Size(253, 175);
+            this.Controls.Add(this.labelImage);
             this.Controls.Add(this.tbPasswordRepeat);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.tbPassword);
@@ -151,5 +161,6 @@
         private System.Windows.Forms.TextBox tbPassword;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tbPasswordRepeat;
+        private System.Windows.Forms.Label labelImage;
     }
 }

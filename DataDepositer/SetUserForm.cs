@@ -77,7 +77,18 @@ namespace DataDepositer
 
         private void validateLength()
         {
-            btnSetUser.Enabled = tbUserName.Text.Length != 0 && tbPassword.Text.Length > 5 && tbPasswordRepeat.Text.Length > 5;
+            btnSetUser.Enabled = tbUserName.Text.Length != 0 && tbPassword.Text.Length > 5 && 
+                                    tbPasswordRepeat.Text.Length > 5 && (tbPasswordRepeat.Text == tbPassword.Text);
+
+            if (btnSetUser.Enabled)
+            {
+                labelImage.Image = DataDepositer.Properties.Resources.green_valid1;
+            }
+            else
+            {
+                labelImage.Image = DataDepositer.Properties.Resources.red_invalid1;
+            }
+
         }
 
     }

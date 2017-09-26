@@ -153,6 +153,10 @@
     <Content Include="Images\Control-Panel-icon-25x25.png" />
     <Content Include="Images\Control-Panel-icon.png" />
     <Content Include="Images\gear_64x64.ico" />
+    <Content Include="Images\green_valid.ico" />
+    <Content Include="Images\green_valid.png" />
+    <Content Include="Images\red_invalid.ico" />
+    <Content Include="Images\red_invalid.png" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
