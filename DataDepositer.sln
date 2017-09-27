@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeachTest", "SpeachTest\Sp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeachTestConsole", "SpeachTestConsole\SpeachTestConsole.csproj", "{4504A0A7-3B15-4D18-A1B0-A8EE17D85CF1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P2P", "P2P\P2P.csproj", "{7328289A-0C6F-46D8-96D1-3D0DE36AE2A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{4504A0A7-3B15-4D18-A1B0-A8EE17D85CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4504A0A7-3B15-4D18-A1B0-A8EE17D85CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4504A0A7-3B15-4D18-A1B0-A8EE17D85CF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7328289A-0C6F-46D8-96D1-3D0DE36AE2A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7328289A-0C6F-46D8-96D1-3D0DE36AE2A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7328289A-0C6F-46D8-96D1-3D0DE36AE2A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7328289A-0C6F-46D8-96D1-3D0DE36AE2A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
