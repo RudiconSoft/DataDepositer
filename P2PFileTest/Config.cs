@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataDepositer
+namespace NetFileManager
 {
     public class Config
     {
@@ -37,7 +37,7 @@ namespace DataDepositer
 
         public Config()
         {
-            string appdata = new Helper().GetCurrentAppDataFolder();
+            string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
             AppDataFolder   = appdata       + "\\DataDepositor";
             StorageFolder   = AppDataFolder + "\\Storage\\";

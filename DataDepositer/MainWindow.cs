@@ -173,7 +173,7 @@
 //        //        {
 //        //            try
 //        //            {
-//        //                peerEntry.ServiceProxy.SendMessage("Привет друг!", ConfigurationManager.AppSettings["username"]);
+//        //                peerEntry.ServiceProxy.SendCommand("Привет друг!", ConfigurationManager.AppSettings["username"]);
 //        //            }
 //        //            catch (CommunicationException)
 //        //            {

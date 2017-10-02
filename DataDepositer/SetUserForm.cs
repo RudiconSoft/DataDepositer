@@ -82,11 +82,11 @@ namespace DataDepositer
 
             if (btnSetUser.Enabled)
             {
-                labelImage.Image = DataDepositer.Properties.Resources.green_valid1;
+                labelImage.Image = Properties.Resources.green_valid1;
             }
             else
             {
-                labelImage.Image = DataDepositer.Properties.Resources.red_invalid1;
+                labelImage.Image = Properties.Resources.red_invalid1;
             }
 
         }

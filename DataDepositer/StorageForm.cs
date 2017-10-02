@@ -72,17 +72,17 @@ namespace DataDepositer
 
         private void SendViewInit()
         {
-            //string[] columns = { "File Name", "Description", "Size", "Chunks", "Status" };
+            //string[] columns = { "File Name", "Description", "Size", "Chunks", "Status" , "Sended / Remain"};
             //List<ColumnHeader> columnHeaders = new List<ColumnHeader>(); // columns
 
-            string[] columns = new Config().GetLocalStorageViewColumns();
+            string[] columns = new Config().GetLocalSendViewColumns();
             foreach (var item in columns)
             {
                 lvSend.Columns.Add(item);
             }
 
             lvSend.View = View.Details;
-            foreach (var item in Vault.StorageList)
+            foreach (var item in Vault.SendList)
             {
                 //ListViewItem lvi = new ListViewItem(item.ToViewStrings);
                 ListViewItem lvi = new ListViewItem(item.OriginName);
@@ -91,7 +91,7 @@ namespace DataDepositer
                 lvi.SubItems.Add(item.Description);
                 lvi.SubItems.Add(Convert.ToString(item.Size));
                 lvi.SubItems.Add(Convert.ToString(item.Chunks));
-                //lvi.SubItems.Add("OK!");
+                lvi.SubItems.Add(Convert.ToString(item.SendedChunks));
 
 
                 lvSend.Items.Add(lvi);
@@ -130,7 +130,7 @@ namespace DataDepositer
             }
         }
 
-        internal void InitLists(List<StorageItem> storageList, List<StorageItem> sendList, List<StorageItem> assembleList)
+        internal void InitLists(List<StorageItem> storageList, List<SendItem> sendList, List<StorageItem> assembleList)
         {
             //StorageList = storageList;
             //SendList = sendList;

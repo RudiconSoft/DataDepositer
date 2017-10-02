@@ -14,7 +14,7 @@ using System.Text;
 using System.Net.PeerToPeer;
 using System.Net;
 
-namespace DataDepositer
+namespace NetFileManager
 {
     public class PeerEntry
     {

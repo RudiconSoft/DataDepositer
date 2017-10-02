@@ -6,7 +6,7 @@ using System.Text;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 
-namespace DataDepositer
+namespace NetFileManager
 {
     [ServiceContract]
     public interface IP2PService

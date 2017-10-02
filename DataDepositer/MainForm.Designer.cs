@@ -45,6 +45,8 @@
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnViewStorage = new System.Windows.Forms.Button();
+            this.timerNetworkCheck = new System.Windows.Forms.Timer(this.components);
+            this.timerResolver = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -157,6 +159,7 @@
             // bgwNetwork
             // 
             this.bgwNetwork.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwNetwork_DoWork);
+            this.bgwNetwork.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwNetwork_RunWorkerCompleted);
             // 
             // fileSystemWatcher1
             // 
@@ -188,7 +191,18 @@
             this.btnViewStorage.TabStop = false;
             this.btnViewStorage.Text = "View Storage";
             this.btnViewStorage.UseVisualStyleBackColor = true;
-            this.btnViewStorage.Click += new System.EventHandler(this.button1_Click);
+            this.btnViewStorage.Click += new System.EventHandler(this.btnViewStorage_Click);
+            // 
+            // timerNetworkCheck
+            // 
+            this.timerNetworkCheck.Enabled = true;
+            this.timerNetworkCheck.Interval = 10000;
+            this.timerNetworkCheck.Tick += new System.EventHandler(this.timerNetworkCheck_Tick);
+            // 
+            // timerResolver
+            // 
+            this.timerResolver.Interval = 100000;
+            this.timerResolver.Tick += new System.EventHandler(this.timerResolver_Tick);
             // 
             // MainForm
             // 
@@ -243,6 +257,8 @@
         private System.IO.FileSystemWatcher fileSystemWatcher1;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnViewStorage;
+        private System.Windows.Forms.Timer timerNetworkCheck;
+        private System.Windows.Forms.Timer timerResolver;
     }
 }
 

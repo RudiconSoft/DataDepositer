@@ -28,7 +28,7 @@ namespace DataDepositer
 
             Logger.Log.Info(DateTime.Now.ToString() + "  Start DataDepositor.");
             bool IsExit = false;
-            uint ErrorCounter = 0; // 20 for prevent undefined loop
+            uint ErrorCounter = 0; // 20 for prevent deadloop
 
             while (!IsExit && ErrorCounter < 20)
             {

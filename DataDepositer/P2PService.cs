@@ -25,7 +25,7 @@ namespace DataDepositer
             return username;
         }
 
-        public void SendMessage(string message, string from)
+        public void SendCommand(string message, string from)
         {
             //hostReference.DisplayMessage(message, from);
         }

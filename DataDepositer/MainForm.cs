@@ -11,6 +11,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
+using System.Threading;
 
 namespace DataDepositer
 {
@@ -20,12 +21,16 @@ namespace DataDepositer
         StorageForm formStorage = new StorageForm();
         SettingsForm formSettings = new SettingsForm();
 
+        BackgroundWorker bgwFileSender = new BackgroundWorker(); // Thread for File send
+        BackgroundWorker bgwFileReciever = new BackgroundWorker(); // Thread for File recieve
+
         UserData user = new UserData();
         FileData file = new FileData();
         bool isFileSelected = false;
         bool isUserDefined = false;
         IniFile INI = new IniFile("config.ini");
         Config config = new Config();
+        private NetworkP2P network;
 
         // empty lists
         //List<StorageItem> StorageList = new List<StorageItem>();
@@ -37,9 +42,36 @@ namespace DataDepositer
         {
             InitializeComponent();
             InitConfig();
+            InitP2P();
 
             // init internal storages with
             InitLists();
+            InitBackgroundWorkers();
+            timerNetworkCheck.Start();
+            //bgwNetwork.RunWorkerAsync();
+        }
+
+        private void InitBackgroundWorkers()
+        {
+            // Init file sender
+            this.bgwFileSender.DoWork += new DoWorkEventHandler(this.bgwFileSender_DoWork);
+            this.bgwFileSender.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwFileSender_RunWorkerCompleted);
+
+            // Init file reciever
+
+        }
+
+        private void InitP2P()
+        {
+            network = new NetworkP2P(Application.ProductName, config);
+            network.Init();
+            Logger.Log.Info("Start P2P Network...");
+            network.Start();
+        }
+
+        private void ResolveP2P()
+        {
+            network.Resolve();
         }
 
         // init lists with data.
@@ -58,15 +90,67 @@ namespace DataDepositer
         private void InitSendList()
         {
             //FileInfo fi 
-            if (File.Exists(config.StorageFolder + "List.xml"))
+            if (File.Exists(config.SendFolder + "List.xml"))
             {
                 // Serialize list.xml
-                ReadStorageList();
+                ReadSendList();
             }
             else
             {
                 // create new xml list from files in StorageFolder
-                CreateNewStorageList();
+                CreateNewSendList();
+            }
+        }
+
+        private void CreateNewSendList()
+        {
+            DirectoryInfo di = new DirectoryInfo(config.SendFolder);
+            if (di.Exists)
+            {
+                FileManipulator fm = new FileManipulator();
+                foreach (var f in di.GetFiles())
+                {
+                    try
+                    {
+                        // get header from file
+                        STORED_FILE_HEADER sfh = fm.GetHeaderFromFile(f.FullName);
+
+                        // fill SendItem from header
+                        string originname = f.Name.Substring(0, f.Name.IndexOf(".part") - 5); // if string not found file name ignored
+                        SendItem si = new SendItem(sfh.FileName, originname, sfh.Description, sfh.OriginSize, 
+                            (uint)sfh.ChunksQty, (uint)sfh.ChunkNum, sfh.MD5Chunk, sfh.MD5Origin, 0);
+
+                        // add Send item into List
+                        Vault.SendList.Add(si);
+
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Log.Error("Error in SendList creation process.");
+                        Logger.Log.Error(e.Message);
+                    }
+                }
+
+                // Serialize StorageList
+                XmlSerializer formatter = new XmlSerializer(typeof(List<SendItem>));
+                using (FileStream fs = new FileStream(config.SendFolder + "List.xml", FileMode.OpenOrCreate))
+                {
+                    formatter.Serialize(fs, Vault.SendList);
+                }
+            }
+            else
+            {
+                di.Create(); // just create empty StoredFolder 
+            }
+        }
+
+        private void ReadSendList()
+        {
+            // Deserialize SendList
+            XmlSerializer formatter = new XmlSerializer(typeof(List<SendItem>));
+            using (FileStream fs = new FileStream(config.SendFolder + "List.xml", FileMode.Open))
+            {
+                Vault.SendList = (List<SendItem>)formatter.Deserialize(fs);
             }
         }
 
@@ -262,15 +346,10 @@ namespace DataDepositer
             }
         }
 
-        private void bgwNetwork_DoWork(object sender, DoWorkEventArgs e)
-        {
-
-        }
-
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             // log each exiting
-
+            network.Stop();
             Logger.Log.Info("Quit application.");
         }
 
@@ -333,10 +412,25 @@ namespace DataDepositer
             this.Visible = true;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        //private void button1_Click(object sender, EventArgs e)
+        //{
+        //    this.Visible = false;
+        //    //formStorage.InitLists(Vault.StorageList, Vault.SendList, Vault.AssembleList);
+        //    DialogResult res = formStorage.ShowDialog();
+
+        //    if (res != DialogResult.Cancel)
+        //    {
+        //        // @TODO implementation
+
+        //    }
+        //    this.Visible = true;
+
+        //}
+
+        private void btnViewStorage_Click(object sender, EventArgs e)
         {
             this.Visible = false;
-            formStorage.InitLists(Vault.StorageList, Vault.SendList, Vault.AssembleList);
+            //formStorage.InitLists(Vault.StorageList, Vault.SendList, Vault.AssembleList);
             DialogResult res = formStorage.ShowDialog();
 
             if (res != DialogResult.Cancel)
@@ -347,5 +441,72 @@ namespace DataDepositer
             this.Visible = true;
 
         }
+
+        private void bgwNetwork_DoWork(object sender, DoWorkEventArgs e)
+        {
+            //bgwNetwork.
+            Command command = e.Argument as Command;
+            //CommandQueue queue = sender as CommandQueue;
+
+            //for (int i = 0; i < command.Counter; i++)
+            //{
+            //    Logger.Log.Info(" bgwNetwork_DoWork  Test  " + command.Message + "  " + Convert.ToString(i));
+            //    Thread.Sleep(10000); // Sleep 10 sec
+            //}
+
+            ResolveP2P();
+        }
+
+        private void bgwNetwork_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Logger.Log.Info(" bgwNetwork_DoWork  Test Complete ");
+        }
+
+        private void timerNetworkCheck_Tick(object sender, EventArgs e)
+        {
+            Command command = new Command("Start on Timer", new Random().Next() % 10 + 1);
+            timerNetworkCheck.Interval = (new Random().Next() % 100 + 100) * 1000;
+            if (!bgwNetwork.IsBusy)
+            {
+                bgwNetwork.RunWorkerAsync(command);
+            }
+            else
+            {
+                Logger.Log.Info(" BackgroundWorker - " + bgwNetwork.ToString() + " is busy !!");
+            }
+        }
+
+        private void timerResolver_Tick(object sender, EventArgs e)
+        {
+            
+        }
+
+
+        #region BackgroundWorker for File Sender
+        private void bgwFileSender_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Command command = e.Argument as Command;
+            //CommandQueue queue = sender as CommandQueue;
+
+        }
+
+        private void bgwFileSender_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+        }
+        #endregion
+
+        #region BackgroundWorker for File Reciever
+        private void bgwFileReciever_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Command command = e.Argument as Command;
+            //CommandQueue queue = sender as CommandQueue;
+
+        }
+
+        private void bgwFileReciever_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+        }
+        #endregion
     }
 }
