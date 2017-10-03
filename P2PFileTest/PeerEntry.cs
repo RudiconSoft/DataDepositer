@@ -24,6 +24,7 @@ namespace NetFileManager
         public string Comment { get; set; }
         public bool ButtonsEnabled { get; set; }
         public string Data { get; set; }
-        public IPEndPointCollection endpoints;
+
+        public IPEndPointCollection Endpoints;
     }
 }

@@ -130,6 +130,7 @@
             this.lvAssemble.TabIndex = 0;
             this.lvAssemble.UseCompatibleStateImageBehavior = false;
             this.lvAssemble.View = System.Windows.Forms.View.Details;
+            this.lvAssemble.SelectedIndexChanged += new System.EventHandler(this.lvAssemble_SelectedIndexChanged);
             // 
             // StorageForm
             // 

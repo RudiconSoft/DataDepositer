@@ -22,8 +22,8 @@ namespace DataDepositer
         public IP2PService ServiceProxy { get; set; }
         public string DisplayString { get; set; }
         public string Comment { get; set; }
-        public bool ButtonsEnabled { get; set; }
+        //public bool ButtonsEnabled { get; set; }
         public string Data { get; set; }
-        public IPEndPointCollection endpoints;
+        //public IPEndPointCollection Endpoints;
     }
 }

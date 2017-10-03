@@ -98,7 +98,7 @@ namespace NetFileManager
                     peer.Data = System.Text.Encoding.ASCII.GetString(record.Data);
                 }
 
-                peer.endpoints = record.EndPointCollection;
+                peer.Endpoints = record.EndPointCollection;
                 //foreach (IPEndPoint endpoint in record.EndPointCollection)
                 //{
                 //    Console.WriteLine("\t Endpoint:{0}", endpoint);

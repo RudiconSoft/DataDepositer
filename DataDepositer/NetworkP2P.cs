@@ -21,6 +21,10 @@ namespace DataDepositer
         private PeerNameRegistration pnReg;
         private PeerNameResolver resolver;
         private int Port = 13027;
+        private P2PService localService;
+        private ServiceHost host;
+        internal object mainform = null;
+        private string endpointuriformat = "net.tcp://{0}:{1}/P2PService/DataDepositer";
 
         public NetworkP2P(string networkName, Config config)
         {
@@ -28,13 +32,77 @@ namespace DataDepositer
             Config = config;
         }
 
-        public NetworkP2P(string networkName, int Port)
+        public NetworkP2P(string networkName, int port)
         {
             NetworkName = networkName;
+            Port = port;
         }
 
         internal void Init()
         {
+            // Получение конфигурационной информации из app.config
+            //string port = ConfigurationManager.AppSettings["port"];
+            string port = ConfigurationManager.AppSettings["port"];
+            string username = ConfigurationManager.AppSettings["username"];
+            string machineName = Environment.MachineName;
+            string serviceUrl = null;
+
+            // Установка заголовка окна
+            //this.Title = string.Format("P2P приложение - {0}", username);
+
+            //  Получение URL-адреса службы с использованием адресаIPv4 
+            //  и порта из конфигурационного файла
+            foreach (IPAddress address in Dns.GetHostAddresses(Dns.GetHostName()))
+            {
+                if (address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    serviceUrl = string.Format(endpointuriformat, address, port);
+                    break;
+                }
+            }
+
+            // Выполнение проверки, не является ли адрес null
+            if (serviceUrl == null)
+            {
+                // Отображение ошибки и завершение работы приложения
+                //MessageBox.Show(this, "Не удается определить адрес конечной точки WCF.", "Networking Error",
+                //    MessageBoxButton.OK, MessageBoxImage.Stop);
+                Logger.Log.Info("Не удается определить адрес конечной точки WCF.", "Networking Error");
+                MessageBox.Show("Не удается определить адрес конечной точки WCF.", "Networking Error", MessageBoxButtons.OK);
+
+                //Application.Exit();
+            }
+
+            // Регистрация и запуск службы WCF
+            localService = new P2PService(mainform, username); // @TODO Need refactor
+
+            host = new ServiceHost(localService, new Uri(serviceUrl));
+            NetTcpBinding binding = new NetTcpBinding();
+            binding.Security.Mode = SecurityMode.None;
+            host.AddServiceEndpoint(typeof(IP2PService), binding, serviceUrl);
+            try
+            {
+                host.Open();
+            }
+            catch (AddressAlreadyInUseException)
+            {
+                // Отображение ошибки и завершение работы приложения
+                Logger.Log.Info("Не удается начать прослушивание, порт занят.", "WCF Error");
+                MessageBox.Show("Не удается начать прослушивание, порт занят.", "WCF Error", MessageBoxButtons.OK);
+                Application.Exit();
+            }
+
+            //// Создание имени равноправного участника (пира)
+            //peerName = new PeerName("P2P Sample", PeerNameType.Unsecured);
+
+            //// Подготовка процесса регистрации имени равноправного участника в локальном облаке
+            //peerNameRegistration = new PeerNameRegistration(peerName, int.Parse(port));
+            //peerNameRegistration.Cloud = Cloud.AllLinkLocal;
+
+            //// Запуск процесса регистрации
+            //peerNameRegistration.Start();
+
+
             // Creates a secure (not spoofable) PeerName
             peerName = new PeerName( Application.ProductName, PeerNameType.Secured);
             pnReg = new PeerNameRegistration();
@@ -47,7 +115,8 @@ namespace DataDepositer
             // The properties set below are optional.  
             // You can register a PeerName without setting these properties
             // but this properties can help identify PC
-            pnReg.Comment = "up to 39 unicode char comment";
+            //pnReg.Comment = "up to 39 unicode char comment";
+            pnReg.Comment = username.Substring(0, Math.Min(39, username.Length));
             pnReg.Data = Encoding.UTF8.GetBytes("A data blob associated with the name"); // @TODO Add binary data for Peer2Peer Netwwork
 
             // OPTIONAL
@@ -56,7 +125,7 @@ namespace DataDepositer
             //pnReg.IPEndPointCollection = // a list of all {IPv4/v6 address, port} pairs to associate with the peername
             //pnReg.Cloud = //the scope in which the name should be registered (local subnet, internet, etc)
             //pnReg.Cloud = Cloud.Global; // resolve in Global Network - 
-            pnReg.Cloud = Cloud.Global; // resolve in Global Network - 
+            pnReg.Cloud = Cloud.Available; // resolve in Global Network - 
         }
 
         internal void Stop()
@@ -73,11 +142,93 @@ namespace DataDepositer
             pnReg.Start();
         }
 
+        public void ResolveAsync()
+        {
+            // Создание распознавателя и добавление обработчиков событий
+            //PeerNameResolver resolver = new PeerNameResolver();
+            resolver = new PeerNameResolver();
+            resolver.ResolveProgressChanged +=
+                    new EventHandler<ResolveProgressChangedEventArgs>(resolver_ResolveProgressChanged);
+            resolver.ResolveCompleted +=
+                new EventHandler<ResolveCompletedEventArgs>(resolver_ResolveCompleted);
+
+            // Подготовка к добавлению новых пиров
+            Vault.Peers.Clear();
+
+            // Преобразование незащищенных имен пиров асинхронным образом
+            //resolver.ResolveAsync(new PeerName("0.P2P Sample"), 1);
+            //PeerName peername = new PeerName(Application.ProductName, PeerNameType.Unsecured);
+            resolver.ResolveAsync(peerName, Cloud.Available);
+
+
+        }
+
+        public void resolver_ResolveCompleted(object sender, ResolveCompletedEventArgs e)
+        {
+            // Сообщение об ошибке, если в облаке не найдены пиры
+            //if (Vault.Peers.Count == 0)
+            //{
+            //    Vault.Peers.Add(
+            //       new PeerEntry
+            //       {
+            //           DisplayString = "Пиры не найдены.",
+            //       });
+            //}
+            //// Повторно включаем кнопку "обновить"
+            //RefreshButton.IsEnabled = true;
+        }
+
+        public void resolver_ResolveProgressChanged(object sender, ResolveProgressChangedEventArgs e)
+        {
+            PeerNameRecord peer = e.PeerNameRecord;
+
+            foreach (IPEndPoint ep in peer.EndPointCollection)
+            {
+                if (ep.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    try
+                    {
+                        string endpointUrl = string.Format(endpointuriformat, ep.Address, ep.Port);
+                        NetTcpBinding binding = new NetTcpBinding();
+                        //binding.Security.Mode = SecurityMode.None;
+                        binding.Security.Mode = SecurityMode.None;
+                        IP2PService serviceProxy = ChannelFactory<IP2PService>.CreateChannel(
+                            binding, new EndpointAddress(endpointUrl));
+
+                        PeerEntry entry = new PeerEntry
+                        {
+                            PeerName = peer.PeerName,
+                            ServiceProxy = serviceProxy,
+                            DisplayString = serviceProxy.GetName(),
+                        };
+
+                        //Vault.Peers.Add(peer);
+                        Logger.Log.Info(endpointUrl);
+                        Logger.Log.Info(entry.PeerName);
+                        Logger.Log.Info(entry.Comment);
+                        Logger.Log.Info("\t Endpoint:{0}", ep);
+
+                        Vault.Peers.Add(entry);
+                    }
+                    catch (EndpointNotFoundException)
+                    {
+                        //Vault.Peers.Add(
+                        //   new PeerEntry
+                        //   {
+                        //       PeerName = peer.PeerName,
+                        //       DisplayString = "Unknown Peer",
+                        //   });
+                    }
+                }
+            }
+        }
+
+
         internal void Resolve()
         {
             Logger.Log.Info("Start P2P resolver...");
             // create a resolver object to resolve a peername
-            PeerNameResolver resolver = new PeerNameResolver();
+            resolver = new PeerNameResolver();
 
             // resolve the PeerName - this is a network operation and will block until the resolve completes
             PeerNameRecordCollection results = resolver.Resolve(peerName);
@@ -95,7 +246,7 @@ namespace DataDepositer
                     peer.Data = System.Text.Encoding.ASCII.GetString(record.Data);
                 }
 
-                peer.endpoints = record.EndPointCollection;
+                //peer.Endpoints = record.EndPointCollection;
                 //foreach (IPEndPoint endpoint in record.EndPointCollection)
                 //{
                 //    Console.WriteLine("\t Endpoint:{0}", endpoint);
@@ -113,6 +264,76 @@ namespace DataDepositer
                 Logger.Log.Info("End P2P resolver...");
             }
         }
+
+        internal void Resolve2()
+        {
+            Logger.Log.Info("Start P2P resolver...");
+            // create a resolver object to resolve a peername
+            resolver = new PeerNameResolver();
+
+            // resolve the PeerName - this is a network operation and will block until the resolve completes
+            PeerNameRecordCollection results = resolver.Resolve(peerName, 100); // Max 100 records
+
+            foreach (PeerNameRecord record in results)
+            {
+                foreach (IPEndPoint ep in record.EndPointCollection)
+                {
+                    if (ep.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                    {
+                        try
+                        {
+                            string endpointUrl = string.Format(endpointuriformat, ep.Address, ep.Port);
+                            NetTcpBinding binding = new NetTcpBinding();
+                            //binding.Security.Mode = SecurityMode.None;
+                            binding.Security.Mode = SecurityMode.None;
+                            IP2PService serviceProxy = ChannelFactory<IP2PService>.CreateChannel(
+                                binding, new EndpointAddress(endpointUrl));
+
+                            //PeerEntry entry = new PeerEntry
+                            //{
+                            //    PeerName = record.PeerName,
+                            //    ServiceProxy = serviceProxy,
+                            //    DisplayString = serviceProxy.GetName(),
+                            //};
+
+                            PeerEntry peer = new PeerEntry();
+                            peer.PeerName = record.PeerName;
+                            peer.ServiceProxy = serviceProxy;
+                            peer.DisplayString = serviceProxy.GetName();
+                            if (record.Comment != null)
+                            {
+                                peer.Comment = record.Comment;
+                            }
+
+                            if (record.Data != null)
+                            {
+                                peer.Data = System.Text.Encoding.ASCII.GetString(record.Data);
+                            }
+
+
+                            //Vault.Peers.Add(peer);
+                            Logger.Log.Info(endpointUrl);
+                            Logger.Log.Info(peer.PeerName);
+                            Logger.Log.Info(peer.Comment);
+                            Logger.Log.Info("\t Endpoint:{0}", ep);
+
+                            Vault.Peers.Add(peer);
+                        }
+                        catch (EndpointNotFoundException e)
+                        {
+                            //Vault.Peers.Add(
+                            //   new PeerEntry
+                            //   {
+                            //       PeerName = peer.PeerName,
+                            //       DisplayString = "Unknown Peer",
+                            //   });
+                            Logger.Log.Info(e.Message);
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
 
@@ -296,11 +517,11 @@ namespace DataDepositer
 //        }
 //    }
 
-//    internal void DisplayMessage(string message, string from)
-//    {
-//        // Показать полученное сообщение (вызывается из службы WCF)
-//        MessageBox.Show(message, string.Format("Сообщение от {0}", from),
-//            MessageBoxButtons.OK);
-//    }
+//internal void DisplayMessage(string message, string from)
+//{
+//    // Показать полученное сообщение (вызывается из службы WCF)
+//    MessageBox.Show(message, string.Format("Сообщение от {0}", from),
+//        MessageBoxButtons.OK);
+//}
 
 //}

@@ -43,10 +43,14 @@
             this.labelFileName = new System.Windows.Forms.Label();
             this.bgwNetwork = new System.ComponentModel.BackgroundWorker();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
-            this.btnSettings = new System.Windows.Forms.Button();
             this.btnViewStorage = new System.Windows.Forms.Button();
             this.timerNetworkCheck = new System.Windows.Forms.Timer(this.components);
             this.timerResolver = new System.Windows.Forms.Timer(this.components);
+            this.bgwCommandManager = new System.ComponentModel.BackgroundWorker();
+            this.bgwP2PResolver = new System.ComponentModel.BackgroundWorker();
+            this.btnRefresh = new System.Windows.Forms.Button();
+            this.btnShowPeers = new System.Windows.Forms.Button();
+            this.btnSettings = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -167,19 +171,6 @@
             this.fileSystemWatcher1.IncludeSubdirectories = true;
             this.fileSystemWatcher1.SynchronizingObject = this;
             // 
-            // btnSettings
-            // 
-            this.btnSettings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSettings.Image = global::DataDepositer.Properties.Resources.Control_Panel_icon_25x25;
-            this.btnSettings.Location = new System.Drawing.Point(137, 525);
-            this.btnSettings.Margin = new System.Windows.Forms.Padding(0);
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(25, 25);
-            this.btnSettings.TabIndex = 9;
-            this.btnSettings.UseVisualStyleBackColor = true;
-            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
-            // 
             // btnViewStorage
             // 
             this.btnViewStorage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -204,12 +195,56 @@
             this.timerResolver.Interval = 100000;
             this.timerResolver.Tick += new System.EventHandler(this.timerResolver_Tick);
             // 
+            // bgwCommandManager
+            // 
+            this.bgwCommandManager.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwCommandManager_DoWork);
+            // 
+            // bgwP2PResolver
+            // 
+            this.bgwP2PResolver.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwP2PResolver_DoWork);
+            this.bgwP2PResolver.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwP2PResolver_RunWorkerCompleted);
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Location = new System.Drawing.Point(12, 135);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(260, 23);
+            this.btnRefresh.TabIndex = 11;
+            this.btnRefresh.Text = "Refresh P2P";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnShowPeers
+            // 
+            this.btnShowPeers.Location = new System.Drawing.Point(12, 177);
+            this.btnShowPeers.Name = "btnShowPeers";
+            this.btnShowPeers.Size = new System.Drawing.Size(260, 23);
+            this.btnShowPeers.TabIndex = 12;
+            this.btnShowPeers.Text = "Show Peers";
+            this.btnShowPeers.UseVisualStyleBackColor = true;
+            this.btnShowPeers.Click += new System.EventHandler(this.btnShowPeers_Click);
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSettings.Image = global::DataDepositer.Properties.Resources.Control_Panel_icon_25x25;
+            this.btnSettings.Location = new System.Drawing.Point(137, 525);
+            this.btnSettings.Margin = new System.Windows.Forms.Padding(0);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(25, 25);
+            this.btnSettings.TabIndex = 9;
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 561);
+            this.Controls.Add(this.btnShowPeers);
+            this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnViewStorage);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.labelFileName);
@@ -228,7 +263,6 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Data Depositor (c)";
-            this.TopMost = true;
             this.Deactivate += new System.EventHandler(this.MainForm_Deactivate);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
@@ -259,6 +293,10 @@
         private System.Windows.Forms.Button btnViewStorage;
         private System.Windows.Forms.Timer timerNetworkCheck;
         private System.Windows.Forms.Timer timerResolver;
+        private System.ComponentModel.BackgroundWorker bgwCommandManager;
+        private System.ComponentModel.BackgroundWorker bgwP2PResolver;
+        private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.Button btnShowPeers;
     }
 }
 

@@ -15,6 +15,10 @@ namespace DataDepositer
         string GetName();
 
         [OperationContract(IsOneWay = true)]
-        void SendCommand(string message, string from);
+        void SendMessage(string message, string from);
+
+        [OperationContract(IsOneWay = true)]
+        void SendCommand(Command command, string from);
+        //void SendMessage(string v1, string v2);
     }
 }

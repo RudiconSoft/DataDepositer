@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
 [assembly: AssemblyTitle("DataDepositer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Distributed Net Storage for file.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("RuDiCon Soft llc")]
 [assembly: AssemblyProduct("DataDepositer")]

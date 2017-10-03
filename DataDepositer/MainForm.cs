@@ -12,6 +12,10 @@ using System.IO.Compression;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 using System.Threading;
+using System.Net.PeerToPeer;
+using System.Windows;
+using System.Net;
+using System.ServiceModel;
 
 namespace DataDepositer
 {
@@ -28,9 +32,11 @@ namespace DataDepositer
         FileData file = new FileData();
         bool isFileSelected = false;
         bool isUserDefined = false;
-        IniFile INI = new IniFile("config.ini");
+        //IniFile INI = new IniFile("config.ini");
+        IniFile INI = null;// new IniFile("config.ini");
         Config config = new Config();
         private NetworkP2P network;
+        //public string ConfigName = "config.ini";
 
         // empty lists
         //List<StorageItem> StorageList = new List<StorageItem>();
@@ -38,9 +44,10 @@ namespace DataDepositer
         //List<FileInfo> AssembleList = new List<FileInfo>();
 
 
-        public MainForm()
+        public MainForm(string configname)
         {
             InitializeComponent();
+            INI = new IniFile(configname);
             InitConfig();
             InitP2P();
 
@@ -64,6 +71,7 @@ namespace DataDepositer
         private void InitP2P()
         {
             network = new NetworkP2P(Application.ProductName, config);
+            network.mainform = this;
             network.Init();
             Logger.Log.Info("Start P2P Network...");
             network.Start();
@@ -71,7 +79,7 @@ namespace DataDepositer
 
         private void ResolveP2P()
         {
-            network.Resolve();
+            //network.Resolve();
         }
 
         // init lists with data.
@@ -453,8 +461,22 @@ namespace DataDepositer
             //    Logger.Log.Info(" bgwNetwork_DoWork  Test  " + command.Message + "  " + Convert.ToString(i));
             //    Thread.Sleep(10000); // Sleep 10 sec
             //}
+            if (Vault.Peers.Count > 0)
+            {
+                int random = new Random().Next(0, Vault.Peers.Count - 1);
+                PeerEntry entry = Vault.Peers.ElementAt(random);
+                if (entry != null && entry.ServiceProxy != null)
+                {
+                    entry.ServiceProxy.SendCommand(command, Convert.ToString(config.Port));
+                    entry.ServiceProxy.SendMessage(command.Message, Convert.ToString(config.Port));
+                }
+            }
+            //foreach ( PeerEntry item in Vault.Peers)
+            //{
+            //    item.ServiceProxy.SendCommand(command, user.GetName());
+            //}
 
-            ResolveP2P();
+            //ResolveP2P();
         }
 
         private void bgwNetwork_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -464,21 +486,24 @@ namespace DataDepositer
 
         private void timerNetworkCheck_Tick(object sender, EventArgs e)
         {
-            Command command = new Command("Start on Timer", new Random().Next() % 10 + 1);
-            timerNetworkCheck.Interval = (new Random().Next() % 100 + 100) * 1000;
-            if (!bgwNetwork.IsBusy)
-            {
-                bgwNetwork.RunWorkerAsync(command);
-            }
-            else
-            {
-                Logger.Log.Info(" BackgroundWorker - " + bgwNetwork.ToString() + " is busy !!");
-            }
+            //Command command = new Command("Start on Timer", new Random().Next() % 10 + 1);
+            //timerNetworkCheck.Interval = (new Random().Next() % 100 + 100) * 1000;
+            //if (!bgwNetwork.IsBusy)
+            //{
+            //    bgwNetwork.RunWorkerAsync(command);
+            //}
+            //else
+            //{
+            //    Logger.Log.Info(" BackgroundWorker - " + bgwNetwork.ToString() + " is busy !!");
+            //}
         }
 
         private void timerResolver_Tick(object sender, EventArgs e)
         {
-            
+            //if (!bgwP2PResolver.IsBusy)
+            //{
+            //    bgwP2PResolver.RunWorkerAsync(); // 
+            //}
         }
 
 
@@ -508,5 +533,140 @@ namespace DataDepositer
 
         }
         #endregion
+
+        #region BackgroundWorker for CommandManager
+        private void bgwCommandManager_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Command command = e.Argument as Command;
+
+
+        }
+        #endregion
+
+        #region BackgroundWorker for P2PResolver
+        private void bgwP2PResolver_DoWork(object sender, DoWorkEventArgs e)
+        {
+            //// Создание распознавателя и добавление обработчиков событий
+            //PeerNameResolver resolver = new PeerNameResolver();
+            //resolver.ResolveProgressChanged +=
+            //    new EventHandler<ResolveProgressChangedEventArgs>(resolver_ResolveProgressChanged);
+            //resolver.ResolveCompleted +=
+            //    new EventHandler<ResolveCompletedEventArgs>(resolver_ResolveCompleted);
+
+            //// Подготовка к добавлению новых пиров
+            //Vault.Peers.Clear();
+
+            //// Преобразование незащищенных имен пиров асинхронным образом
+            ////resolver.ResolveAsync(new PeerName("0.P2P Sample"), 1);
+            //PeerName peername = new PeerName(Application.ProductName, PeerNameType.Unsecured);
+            //resolver.ResolveAsync(peername, Cloud.Available);
+
+            //network.ResolveAsync();
+            network.Resolve2();
+
+        }
+
+        //private void resolver_ResolveCompleted(object sender, ResolveCompletedEventArgs e)
+        //{
+        //    // Сообщение об ошибке, если в облаке не найдены пиры
+        //    if (Vault.Peers.Count == 0)
+        //    {
+        //        Vault.Peers.Add(
+        //           new PeerEntry
+        //           {
+        //               DisplayString = "Пиры не найдены.",
+        //           });
+        //    }
+        //    //// Повторно включаем кнопку "обновить"
+        //    //RefreshButton.IsEnabled = true;
+        //}
+
+        //private void resolver_ResolveProgressChanged(object sender, ResolveProgressChangedEventArgs e)
+        //{
+        //    PeerNameRecord peer = e.PeerNameRecord;
+
+        //    foreach (IPEndPoint ep in peer.EndPointCollection)
+        //    {
+        //        if (ep.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+        //        {
+        //            try
+        //            {
+        //                string endpointUrl = string.Format("net.tcp://{0}:{1}/P2PService", ep.Address, ep.Port);
+        //                NetTcpBinding binding = new NetTcpBinding();
+        //                //binding.Security.Mode = SecurityMode.None;
+        //                binding.Security.Mode = SecurityMode.None;
+        //                IP2PService serviceProxy = ChannelFactory<IP2PService>.CreateChannel(
+        //                    binding, new EndpointAddress(endpointUrl));
+        //                Vault.Peers.Add(
+        //                   new PeerEntry
+        //                   {
+        //                       PeerName = peer.PeerName,
+        //                       ServiceProxy = serviceProxy,
+        //                       DisplayString = serviceProxy.GetName(),
+        //                   });
+        //            }
+        //            catch (EndpointNotFoundException)
+        //            {
+        //                Vault.Peers.Add(
+        //                   new PeerEntry
+        //                   {
+        //                       PeerName = peer.PeerName,
+        //                       DisplayString = "Unknown Peer",
+        //                   });
+        //            }
+        //        }
+        //    }
+        //}
+
+        private void PeerList_Click(object sender, EventArgs e)
+        {
+            ////// Убедимся, что пользователь щелкнул по кнопке с именем MessageButton
+            ////if (((Button)e.OriginalSource).Name == "MessageButton")
+            //{
+            //    // Получение пира и прокси, для отправки сообщения
+            //    //PeerEntry peerEntry = ((Button)e.OriginalSource).DataContext as PeerEntry;
+            //    PeerEntry peerEntry = new PeerEntry();  //as PeerEntry;
+            //    if (peerEntry != null && peerEntry.ServiceProxy != null)
+            //    {
+            //        try
+            //        {
+            //            peerEntry.ServiceProxy.SendCommand("Привет друг!", "");
+            //        }
+            //        catch (CommunicationException)
+            //        {
+
+            //        }
+            //    }
+            //}
+        }
+
+        #endregion
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (!bgwP2PResolver.IsBusy)
+            {
+                Vault.Peers.Clear();
+
+                btnRefresh.Enabled = false;
+                bgwP2PResolver.RunWorkerAsync(); // 
+            }
+        }
+
+        internal void DisplayMessage(string message, string from)
+        {
+            // Показать полученное сообщение (вызывается из службы WCF)
+            MessageBox.Show(message, string.Format("Сообщение от {0}", from));
+        }
+
+        private void bgwP2PResolver_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            btnRefresh.Enabled = true;
+        }
+
+        private void btnShowPeers_Click(object sender, EventArgs e)
+        {
+            new ShowPeersForm().Show(this);
+        }
     }
 }

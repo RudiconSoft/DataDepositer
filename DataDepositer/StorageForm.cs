@@ -145,5 +145,10 @@ namespace DataDepositer
         {
             
         }
+
+        private void lvAssemble_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
+        }
     }
 }

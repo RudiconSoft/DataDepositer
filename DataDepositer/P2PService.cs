@@ -25,9 +25,18 @@ namespace DataDepositer
             return username;
         }
 
-        public void SendCommand(string message, string from)
+        public void SendMessage(string message, string from)
+        {
+            hostReference.DisplayMessage(message, from);
+            // Async Command processing
+        }
+
+        public void SendCommand(Command command, string from)
         {
             //hostReference.DisplayMessage(message, from);
+            // Async Command processing
+            Vault.MainQueue.Enqueue(command);
+            Logger.Log.Info(string.Format("Recieve command {0} from : {1}", command.Message, from));
         }
     }
 }

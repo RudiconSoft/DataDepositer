@@ -23,10 +23,10 @@ namespace DataDepositer
         /// Главная точка входа для приложения.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
 
-            Logger.Log.Info(DateTime.Now.ToString() + "  Start DataDepositor.");
+            Logger.Log.Info("  Start DataDepositor.");
             bool IsExit = false;
             uint ErrorCounter = 0; // 20 for prevent deadloop
 
@@ -36,7 +36,18 @@ namespace DataDepositer
                 {
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
-                    Application.Run(new MainForm());
+                    string configname;
+                    if (args.Length > 0)
+                    {
+                        configname = args[0];
+                    }
+                    else
+                    {
+                        configname = "config.ini";
+                    }
+
+                    MainForm main = new MainForm(configname);
+                    Application.Run(main);
                     IsExit = true;
                 }
                 catch(NotImplementedException e)
