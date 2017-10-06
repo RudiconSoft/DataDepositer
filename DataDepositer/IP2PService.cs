@@ -19,6 +19,6 @@ namespace DataDepositer
 
         [OperationContract(IsOneWay = true)]
         void SendCommand(Command command, string from);
-        //void SendMessage(string v1, string v2);
+        //void SendMessage(string message, string counter);
     }
 }

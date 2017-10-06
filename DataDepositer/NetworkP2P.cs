@@ -15,16 +15,18 @@ namespace DataDepositer
     {
         public string NetworkName;
         public string Comment;
+        public string Username;
+        public int Port { get; private set; } = 13027;
 
         private Config Config;
         private PeerName peerName;
         private PeerNameRegistration pnReg;
         private PeerNameResolver resolver;
-        private int Port = 13027;
         private P2PService localService;
         private ServiceHost host;
         internal object mainform = null;
         private string endpointuriformat = "net.tcp://{0}:{1}/P2PService/DataDepositer";
+
 
         public NetworkP2P(string networkName, Config config)
         {
@@ -42,8 +44,12 @@ namespace DataDepositer
         {
             // Получение конфигурационной информации из app.config
             //string port = ConfigurationManager.AppSettings["port"];
+            // @need refactor
             string port = ConfigurationManager.AppSettings["port"];
+            Port = Convert.ToInt32(port);
             string username = ConfigurationManager.AppSettings["username"];
+            Username = username;
+
             string machineName = Environment.MachineName;
             string serviceUrl = null;
 

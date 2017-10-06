@@ -32,6 +32,8 @@ namespace DataDepositer
         FileData file = new FileData();
         bool isFileSelected = false;
         bool isUserDefined = false;
+
+
         //IniFile INI = new IniFile("config.ini");
         IniFile INI = null;// new IniFile("config.ini");
         Config config = new Config();
@@ -653,12 +655,6 @@ namespace DataDepositer
             }
         }
 
-        internal void DisplayMessage(string message, string from)
-        {
-            // Показать полученное сообщение (вызывается из службы WCF)
-            MessageBox.Show(message, string.Format("Сообщение от {0}", from));
-        }
-
         private void bgwP2PResolver_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             btnRefresh.Enabled = true;
@@ -667,6 +663,69 @@ namespace DataDepositer
         private void btnShowPeers_Click(object sender, EventArgs e)
         {
             new ShowPeersForm().Show(this);
+        }
+
+        private void btnCommandTester_Click(object sender, EventArgs e)
+        {
+            if (tbCommand.Text.Length > 0)
+            {
+                // create command from string
+                try
+                {
+                    // parse command string 
+                    int peernum = new Random().Next(0, Vault.Peers.Count - 1);
+                    PeerEntry peerEntry = Vault.Peers.ElementAt(peernum);
+                    if (peerEntry != null && peerEntry.ServiceProxy != null)
+                    {
+                        try
+                        {
+                            peerEntry.ServiceProxy.SendMessage(tbCommand.Text, network.Username);
+
+                            Command com = new Command(tbCommand.Text, Convert.ToInt32(network.Port));
+                            com.xmltest();
+                            peerEntry.ServiceProxy.SendCommand(com, network.Username);
+                        }
+                        catch (CommunicationException)
+                        {
+
+                        }
+                    }
+
+
+                }
+                catch (Exception)
+                {
+                    // if 
+                }
+            }
+        }
+
+        #region P2P command from Network Region
+        internal void DisplayMessage(string message, string from)
+        {
+            // Показать полученное сообщение (вызывается из службы WCF)
+            MessageBox.Show(message, string.Format("Сообщение от {0}", from));
+        }
+        internal void ReciveCommand(Command command, string from)
+        {
+            Vault.MainQueue.Enqueue(command);
+            MessageBox.Show(command.Message, string.Format("Recieve command from {0}", from), MessageBoxButtons.OK);
+        }
+        #endregion
+
+        private void tbCommand_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tbCommand_Enter(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void tbCommand_Click(object sender, EventArgs e)
+        {
+            tbCommand.SelectAll();
         }
     }
 }

@@ -51,6 +51,8 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnShowPeers = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
+            this.btnCommandTester = new System.Windows.Forms.Button();
+            this.tbCommand = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -92,6 +94,7 @@
             // labelName
             // 
             this.labelName.AutoSize = true;
+            this.labelName.ForeColor = System.Drawing.Color.Green;
             this.labelName.Location = new System.Drawing.Point(107, 13);
             this.labelName.Name = "labelName";
             this.labelName.Size = new System.Drawing.Size(105, 13);
@@ -154,6 +157,7 @@
             // labelFileName
             // 
             this.labelFileName.AutoSize = true;
+            this.labelFileName.ForeColor = System.Drawing.Color.Green;
             this.labelFileName.Location = new System.Drawing.Point(19, 235);
             this.labelFileName.Name = "labelFileName";
             this.labelFileName.Size = new System.Drawing.Size(107, 13);
@@ -237,12 +241,36 @@
             this.btnSettings.UseVisualStyleBackColor = true;
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
             // 
+            // btnCommandTester
+            // 
+            this.btnCommandTester.Location = new System.Drawing.Point(12, 93);
+            this.btnCommandTester.Name = "btnCommandTester";
+            this.btnCommandTester.Size = new System.Drawing.Size(260, 23);
+            this.btnCommandTester.TabIndex = 13;
+            this.btnCommandTester.Text = "Commands Tester";
+            this.btnCommandTester.UseVisualStyleBackColor = true;
+            this.btnCommandTester.Click += new System.EventHandler(this.btnCommandTester_Click);
+            // 
+            // tbCommand
+            // 
+            this.tbCommand.Location = new System.Drawing.Point(12, 29);
+            this.tbCommand.Multiline = true;
+            this.tbCommand.Name = "tbCommand";
+            this.tbCommand.Size = new System.Drawing.Size(260, 50);
+            this.tbCommand.TabIndex = 14;
+            this.tbCommand.Text = "Enter command for test ...";
+            this.tbCommand.Click += new System.EventHandler(this.tbCommand_Click);
+            this.tbCommand.TextChanged += new System.EventHandler(this.tbCommand_TextChanged);
+            this.tbCommand.Enter += new System.EventHandler(this.tbCommand_Enter);
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 561);
+            this.Controls.Add(this.tbCommand);
+            this.Controls.Add(this.btnCommandTester);
             this.Controls.Add(this.btnShowPeers);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnViewStorage);
@@ -297,6 +325,8 @@
         private System.ComponentModel.BackgroundWorker bgwP2PResolver;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Button btnShowPeers;
+        private System.Windows.Forms.Button btnCommandTester;
+        private System.Windows.Forms.TextBox tbCommand;
     }
 }
 

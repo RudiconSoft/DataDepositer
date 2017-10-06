@@ -35,7 +35,9 @@ namespace DataDepositer
         {
             //hostReference.DisplayMessage(message, from);
             // Async Command processing
-            Vault.MainQueue.Enqueue(command);
+            hostReference.ReciveCommand(command, from);
+            //Vault.MainQueue.Enqueue(command);
+           
             Logger.Log.Info(string.Format("Recieve command {0} from : {1}", command.Message, from));
         }
     }
