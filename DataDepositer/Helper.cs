@@ -63,6 +63,9 @@ namespace DataDepositer
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         public string MD5Chunk;     // String MD5 of chunk
 
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string MD5Userid;     // String MD5 of username + password for get list of users stored files
+
         public UInt64 ChunksQty;      // Chunks qty // 8
 
         public UInt64 ChunkNum;       // Chunks number // 8

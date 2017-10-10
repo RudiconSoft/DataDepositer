@@ -1,4 +1,12 @@
-﻿using System;
+﻿/**
+ * RuDiCon Soft (c) 2017
+ * 
+ * Class for Static Data Vault.
+ * 
+ * @created 2017-10-10 Artem Niikolaev
+ * 
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +21,6 @@ namespace DataDepositer
         public static List<StorageItem> AssembleList = new List<StorageItem>();
         public static CommandQueue MainQueue = new CommandQueue();
         public static List<PeerEntry> Peers = new List<PeerEntry>();
+        public static LocalInfoData LocalInfo = new LocalInfoData();
     }
 }

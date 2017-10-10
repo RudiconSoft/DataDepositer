@@ -25,5 +25,9 @@ namespace DataDepositer
         //public bool ButtonsEnabled { get; set; }
         public string Data { get; set; }
         //public IPEndPointCollection Endpoints;
+        public override string ToString()
+        {
+            return Comment;
+        }
     }
 }

@@ -111,6 +111,7 @@
     <Compile Include="FileWatcher.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="IP2PService.cs" />
+    <Compile Include="LocalInfoData.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MainFormProcessing.cs" />
     <Compile Include="MainWindow.cs" />
