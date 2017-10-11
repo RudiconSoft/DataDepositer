@@ -32,7 +32,7 @@ namespace DataDepositer
             PeerEntry entry = (PeerEntry) lbPeers.SelectedItem;
             Command com = new Command(CommandType.TestConnect, new string[] {entry.Comment, entry.DisplayString });
             com.Message = "TestConnect command added.";
-            entry.ServiceProxy.SendCommand(com, "");
+            entry.ServiceProxy.SendCommand(com, Vault.LocalInfo.MachineName);
         }
     }
 }

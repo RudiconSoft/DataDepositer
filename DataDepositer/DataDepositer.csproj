@@ -80,6 +80,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Net" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -108,7 +109,9 @@
     <Compile Include="FileData.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="FileManipulator.cs" />
+    <Compile Include="FileTransferService.cs" />
     <Compile Include="FileWatcher.cs" />
+    <Compile Include="IFileTransferService.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="IP2PService.cs" />
     <Compile Include="LocalInfoData.cs" />
@@ -143,12 +146,20 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShowFiles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShowFiles.Designer.cs">
+      <DependentUpon>ShowFiles.cs</DependentUpon>
+    </Compile>
     <Compile Include="ShowPeersForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ShowPeersForm.Designer.cs">
       <DependentUpon>ShowPeersForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FingerPrint.cs" />
+    <Compile Include="StorageFileInfo.cs" />
     <Compile Include="UniqueKeyGenerator.cs" />
     <Compile Include="Vault.cs" />
     <Compile Include="StorageForm.cs">
@@ -188,6 +199,9 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="ShowFiles.resx">
+      <DependentUpon>ShowFiles.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ShowPeersForm.resx">
       <DependentUpon>ShowPeersForm.cs</DependentUpon>
     </EmbeddedResource>

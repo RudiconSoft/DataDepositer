@@ -84,6 +84,8 @@ namespace DataDepositer
             //network.Resolve();
         }
 
+        #region Lists init.
+
         // init lists with data.
         private void InitLists()
         {
@@ -230,6 +232,9 @@ namespace DataDepositer
                 di.Create(); // just create empty StoredFolder 
             }
         }
+        #endregion
+
+        #region Config init.
 
         private void InitConfig()
         {
@@ -245,6 +250,10 @@ namespace DataDepositer
             }
             
         }
+        #endregion
+
+
+        #region Main Form methods
 
         private void MainForm_Deactivate(object sender, EventArgs e)
         {
@@ -362,10 +371,12 @@ namespace DataDepositer
             network.Stop();
             Logger.Log.Info("Quit application.");
         }
+        #endregion
 
 
         // private section of methods.
 
+        #region Private methods region
         /// <summary>
         /// 
         /// </summary>
@@ -451,7 +462,9 @@ namespace DataDepositer
             this.Visible = true;
 
         }
+        #endregion
 
+        #region Background Workers Networker Region
         private void bgwNetwork_DoWork(object sender, DoWorkEventArgs e)
         {
             //bgwNetwork.
@@ -499,6 +512,7 @@ namespace DataDepositer
             //    Logger.Log.Info(" BackgroundWorker - " + bgwNetwork.ToString() + " is busy !!");
             //}
         }
+        #endregion
 
         private void timerResolver_Tick(object sender, EventArgs e)
         {
@@ -665,6 +679,8 @@ namespace DataDepositer
             new ShowPeersForm().Show(this);
         }
 
+        #region Command Tester Button Region
+
         private void btnCommandTester_Click(object sender, EventArgs e)
         {
             if (tbCommand.Text.Length > 0)
@@ -672,26 +688,48 @@ namespace DataDepositer
                 // create command from string
                 try
                 {
-                    // parse command string 
-                    int peernum = new Random().Next(0, Vault.Peers.Count - 1);
-                    PeerEntry peerEntry = Vault.Peers.ElementAt(peernum);
-                    if (peerEntry != null && peerEntry.ServiceProxy != null)
+                    switch (tbCommand.Text)
                     {
-                        try
+                        case "SendFile":
                         {
-                            peerEntry.ServiceProxy.SendMessage(tbCommand.Text, network.Username);
-
-                            Command com = new Command(tbCommand.Text, Convert.ToInt32(network.Port));
-                            com.xmltest();
-                            peerEntry.ServiceProxy.SendCommand(com, network.Username);
+                                string sendfile = file.GetFileName();
+                                send(sendfile);
+                            break;
                         }
-                        catch (CommunicationException)
+                        case "GetList":
                         {
-
+                                getlist();
+                                break;
                         }
+                        default:
+                            break;
                     }
 
+                    if (tbCommand.Text == "SendFile")
+                    {
 
+                    }
+                    else
+                    {
+                        // parse command string 
+                        int peernum = new Random().Next(0, Vault.Peers.Count - 1);
+                        PeerEntry peerEntry = Vault.Peers.ElementAt(peernum);
+                        if (peerEntry != null && peerEntry.ServiceProxy != null)
+                        {
+                            try
+                            {
+                                peerEntry.ServiceProxy.SendMessage(tbCommand.Text, network.Username);
+
+                                Command com = new Command(tbCommand.Text, Convert.ToInt32(network.Port));
+                                com.xmltest();
+                                peerEntry.ServiceProxy.SendCommand(com, network.Username);
+                            }
+                            catch (CommunicationException)
+                            {
+
+                            }
+                        }
+                    }
                 }
                 catch (Exception)
                 {
@@ -699,6 +737,63 @@ namespace DataDepositer
                 }
             }
         }
+
+
+        private void getlist()
+        {
+            int peernum = new Random().Next(0, Vault.Peers.Count - 1);
+            PeerEntry peerEntry = Vault.Peers.ElementAt(peernum);
+
+            RemoteListInfo list = peerEntry.ServiceProxy.RequestList();
+            //List<StorageFileInfo> storage = new List<StorageFileInfo>();
+
+            ShowFiles form = new ShowFiles();
+            form.files = list;
+            form.peer = peerEntry;
+
+            form.ShowDialog(this);
+        }
+
+        private void send(string fileName)
+        {
+            //var client = new FileTransferClient.FileTransferServiceClient();
+            //var client = 
+            int peernum = new Random().Next(0, Vault.Peers.Count - 1);
+            PeerEntry peerEntry = Vault.Peers.ElementAt(peernum);
+            DownloadRequest dr = new DownloadRequest();
+            dr.FileName = fileName;
+
+            RemoteFileInfo info = peerEntry.ServiceProxy.DownloadFile(dr);
+            Stream inputStream = info.FileByteStream;
+
+            //using (var writeStream = new FileStream(fileName, FileMode.CreateNew, FileAccess.Write))
+            //string outfile = Path.GetFileName(fileName);
+            string outfile = Path.GetFileName(fileName);
+            using (var writeStream = new FileStream(outfile, FileMode.CreateNew, FileAccess.Write))
+            {
+                const int bufferSize = 2048;
+                var buffer = new byte[bufferSize];
+
+                do
+                {
+                    int bytesRead = inputStream.Read(buffer, 0, bufferSize);
+                    if (bytesRead == 0)
+                    {
+                        break;
+                    }
+
+                    writeStream.Write(buffer, 0, bytesRead);
+                    //progressBar1.Value = (int)(writeStream.Position * 100 / length);
+                }
+                while (true);
+
+                writeStream.Close();
+            }
+
+            inputStream.Dispose();
+        }
+        #endregion
+
 
         #region P2P command from Network Region
         internal void DisplayMessage(string message, string from)
@@ -713,6 +808,7 @@ namespace DataDepositer
         }
         #endregion
 
+        #region Working with Command TextBox
         private void tbCommand_TextChanged(object sender, EventArgs e)
         {
 
@@ -727,5 +823,26 @@ namespace DataDepositer
         {
             tbCommand.SelectAll();
         }
+        #endregion
+
+        #region P2PService calls methods
+        internal RemoteListInfo RequestList()
+        {
+            RemoteListInfo list = new RemoteListInfo();
+            DirectoryInfo storage = new DirectoryInfo(config.StorageFolder);
+
+            foreach (var item in storage.GetFiles())
+            {
+                //list.FileList.Add(item.FullName);
+                StorageFileInfo sfi = new StorageFileInfo();
+                sfi.VirtualPath = item.FullName;
+                sfi.Size = item.Length;
+                list.FileList.Add(sfi);
+            }
+
+            return list;
+        }
+        #endregion
+
     }
 }

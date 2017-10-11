@@ -42,8 +42,6 @@ namespace DataDepositer
 
         internal void Init()
         {
-            // Получение конфигурационной информации из app.config
-            //string port = ConfigurationManager.AppSettings["port"];
             // @need refactor
             string port = ConfigurationManager.AppSettings["port"];
             Port = Convert.ToInt32(port);
@@ -53,11 +51,8 @@ namespace DataDepositer
             string machineName = Environment.MachineName;
             string serviceUrl = null;
 
-            // Установка заголовка окна
-            //this.Title = string.Format("P2P приложение - {0}", username);
-
-            //  Получение URL-адреса службы с использованием адресаIPv4 
-            //  и порта из конфигурационного файла
+            //  Getting URL-adress of service with IPv4 
+            //  and port from config.
             foreach (IPAddress address in Dns.GetHostAddresses(Dns.GetHostName()))
             {
                 if (address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
@@ -67,16 +62,11 @@ namespace DataDepositer
                 }
             }
 
-            // Выполнение проверки, не является ли адрес null
+            // Check for null
             if (serviceUrl == null)
             {
-                // Отображение ошибки и завершение работы приложения
-                //MessageBox.Show(this, "Не удается определить адрес конечной точки WCF.", "Networking Error",
-                //    MessageBoxButton.OK, MessageBoxImage.Stop);
-                Logger.Log.Info("Не удается определить адрес конечной точки WCF.", "Networking Error");
-                MessageBox.Show("Не удается определить адрес конечной точки WCF.", "Networking Error", MessageBoxButtons.OK);
-
-                //Application.Exit();
+                Logger.Log.Info("Not defined Endpoint address for WCF.", "Networking Error");
+                MessageBox.Show("Not defined Endpoint address for WCF.", "Networking Error", MessageBoxButtons.OK);
             }
 
             // Регистрация и запуск службы WCF
@@ -85,6 +75,20 @@ namespace DataDepositer
             host = new ServiceHost(localService, new Uri(serviceUrl));
             NetTcpBinding binding = new NetTcpBinding();
             binding.Security.Mode = SecurityMode.None;
+
+            /////
+            /////
+            // Stream add
+            ////
+            ////
+            binding.TransferMode = TransferMode.Streamed;
+            binding.MaxReceivedMessageSize = 20134217728; // 20 GB
+            binding.MaxBufferPoolSize = 1024 * 1024; // 1 MB
+            ////
+            ////
+            ////
+            ////
+
             host.AddServiceEndpoint(typeof(IP2PService), binding, serviceUrl);
             try
             {
@@ -92,22 +96,10 @@ namespace DataDepositer
             }
             catch (AddressAlreadyInUseException)
             {
-                // Отображение ошибки и завершение работы приложения
-                Logger.Log.Info("Не удается начать прослушивание, порт занят.", "WCF Error");
-                MessageBox.Show("Не удается начать прослушивание, порт занят.", "WCF Error", MessageBoxButtons.OK);
+                Logger.Log.Info("Can`t start listening, port is busy.", "WCF Error");
+                MessageBox.Show("Can`t start listening, port is busy.", "WCF Error", MessageBoxButtons.OK);
                 Application.Exit();
             }
-
-            //// Создание имени равноправного участника (пира)
-            //peerName = new PeerName("P2P Sample", PeerNameType.Unsecured);
-
-            //// Подготовка процесса регистрации имени равноправного участника в локальном облаке
-            //peerNameRegistration = new PeerNameRegistration(peerName, int.Parse(port));
-            //peerNameRegistration.Cloud = Cloud.AllLinkLocal;
-
-            //// Запуск процесса регистрации
-            //peerNameRegistration.Start();
-
 
             // Creates a secure (not spoofable) PeerName
             peerName = new PeerName( Application.ProductName, PeerNameType.Secured);
@@ -150,18 +142,17 @@ namespace DataDepositer
 
         public void ResolveAsync()
         {
-            // Создание распознавателя и добавление обработчиков событий
-            //PeerNameResolver resolver = new PeerNameResolver();
+            // Create resolver.
             resolver = new PeerNameResolver();
             resolver.ResolveProgressChanged +=
                     new EventHandler<ResolveProgressChangedEventArgs>(resolver_ResolveProgressChanged);
             resolver.ResolveCompleted +=
                 new EventHandler<ResolveCompletedEventArgs>(resolver_ResolveCompleted);
 
-            // Подготовка к добавлению новых пиров
+            // Prepare for new peer adding
             Vault.Peers.Clear();
 
-            // Преобразование незащищенных имен пиров асинхронным образом
+            // Solve peer names async
             //resolver.ResolveAsync(new PeerName("0.P2P Sample"), 1);
             //PeerName peername = new PeerName(Application.ProductName, PeerNameType.Unsecured);
             resolver.ResolveAsync(peerName, Cloud.Available);
@@ -171,16 +162,15 @@ namespace DataDepositer
 
         public void resolver_ResolveCompleted(object sender, ResolveCompletedEventArgs e)
         {
-            // Сообщение об ошибке, если в облаке не найдены пиры
+            // error if cloud is empty
             //if (Vault.Peers.Count == 0)
             //{
             //    Vault.Peers.Add(
             //       new PeerEntry
             //       {
-            //           DisplayString = "Пиры не найдены.",
+            //           DisplayString = "Peers not found",
             //       });
             //}
-            //// Повторно включаем кнопку "обновить"
             //RefreshButton.IsEnabled = true;
         }
 
@@ -198,6 +188,20 @@ namespace DataDepositer
                         NetTcpBinding binding = new NetTcpBinding();
                         //binding.Security.Mode = SecurityMode.None;
                         binding.Security.Mode = SecurityMode.None;
+
+                        /////
+                        /////
+                        // Stream add
+                        ////
+                        ////
+                        binding.TransferMode = TransferMode.Streamed;
+                        binding.MaxReceivedMessageSize = 20134217728; // 20 GB
+                        binding.MaxBufferPoolSize = 1024 * 1024; // 1 MB
+                        ////
+                        ////
+                        ////
+                        ////
+
                         IP2PService serviceProxy = ChannelFactory<IP2PService>.CreateChannel(
                             binding, new EndpointAddress(endpointUrl));
 
@@ -292,6 +296,18 @@ namespace DataDepositer
                             NetTcpBinding binding = new NetTcpBinding();
                             //binding.Security.Mode = SecurityMode.None;
                             binding.Security.Mode = SecurityMode.None;
+                            /////
+                            /////
+                            // Stream add
+                            ////
+                            ////
+                            binding.TransferMode = TransferMode.Streamed;
+                            binding.MaxReceivedMessageSize = 20134217728; // 20 GB
+                            binding.MaxBufferPoolSize = 1024 * 1024; // 1 MB
+                            ////
+                            ////
+                            ////
+                            ////
                             IP2PService serviceProxy = ChannelFactory<IP2PService>.CreateChannel(
                                 binding, new EndpointAddress(endpointUrl));
 

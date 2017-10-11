@@ -8,6 +8,8 @@
  *                      Added MD5 maipulation helper.
  *  @updated 2017-09-01 Artem Nikolaev
  *                      Replace in STORED_FILE_HEADER char[] to string
+ *  @updated 2017-10-10 Artem Nikolaev
+ *                      Added methods: SerializeToXML, DeserializeFromXML. 
  * 
  */
 using System;
@@ -18,34 +20,10 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Runtime.InteropServices;
 using System.IO;
-
+using System.Xml.Serialization;
 
 namespace DataDepositer
 {
-
-    //[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
-    //public struct STORED_FILE_HEADER // 340 bytes size (660 in Unicode)
-    //{
-    //    public uint cb;             // Structure size // 4
-
-    //    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
-    //    public char[] FileName;     // Short file name
-
-    //    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-    //    public char[] MD5Origin;    // String MD5 of origin file
-
-    //    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-    //    public char[] MD5Chunk;     // String MD5 of chunk
-
-    //    public uint ChunksQty;      // Chunks qty // 4
-
-    //    public uint ChunkNum;       // Chunks number // 4
-
-    //    public uint OriginSzie;     // origin file size //4
-
-    //    public uint ChunkSize;      // chunk size   //4
-    //}
-
     [StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
     public struct STORED_FILE_HEADER // (668 in Unicode)
     {
@@ -209,6 +187,43 @@ namespace DataDepositer
             string res = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
             return res;
+        }
+
+        public void SerializeToXML<T>(string filename, T obj)
+        {
+            try
+            {
+                XmlSerializer formatter = new XmlSerializer(typeof(T));
+                using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate))
+                {
+                    formatter.Serialize(fs, obj);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public T DeserializeFromXML<T>(string filename)
+        {
+            T obj = default(T);
+            try
+            {
+                XmlSerializer formatter = new XmlSerializer(typeof(T));
+                using (FileStream fs = new FileStream(filename, FileMode.Open))
+                {
+                  obj = (T)formatter.Deserialize(fs);
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return obj;
         }
     }
 }
